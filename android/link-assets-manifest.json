@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Pretendard-SemiBold.ttf",
+      "sha1": "f1afc4fafdc4d5fd83ee207bf9159251e4f7c8c7"
+    },
+    {
+      "path": "assets/fonts/TheJamsil3-Regular.ttf",
+      "sha1": "9417cbc8e1ddef19bc4c7d530fa5e6fccc87670e"
+    },
+    {
+      "path": "assets/fonts/TheJamsil4-Medium.ttf",
+      "sha1": "90c9040f3399dba07f87d49d92b94f5bcc966ccb"
+    }
+  ]
+}
