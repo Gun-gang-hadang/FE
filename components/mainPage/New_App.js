@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text} from 'react-native';
+
 import CustomButton from '../common/CustomButton';
 
 import colors from '../../assets/colors/colors';
 import logo from '../../assets/images/logo.png';
+
 
 const App = () => {
   return (

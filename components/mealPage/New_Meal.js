@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+
 import TabNavigation from '../navigation/Tab';
 
 import colors from '../../assets/colors/colors';
+
 
 const App = () => {
   return (
@@ -22,7 +24,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 60,
+
     fontFamily: 'TheJamsil3-Regular',
+
     color: '#000000',
   },
 });

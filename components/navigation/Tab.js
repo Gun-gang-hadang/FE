@@ -2,7 +2,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import {BloodSugar, Meal, Measure} from './TabScreen';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../../assets/colors/colors';
 
@@ -18,7 +20,9 @@ const TabNavigation = () => {
         },
         headerTintColor: '#000000',
         headerTitleStyle: {
+
           fontFamily: 'TheJamsil4-Medium',
+
           fontSize: 35,
         },
 
@@ -27,7 +31,9 @@ const TabNavigation = () => {
         tabBarActiveBackgroundColor: colors.main,
         tabBarInactiveBackgroundColor: colors.secondary,
         tabBarLabelStyle: {
+
           fontFamily: 'TheJamsil3-Regular',
+
           fontSize: 25,
         },
 
