@@ -13,20 +13,7 @@ const RootStack = () => {
       <Stack.Screen
         name="Write"
         component={BloodrecordScreen}
-        options={{
-          title: '혈당 입력',
-
-          headerStyle: {
-            backgroundColor: colors.bg,
-          },
-          headerBackVisible: false,
-
-          headerTintColor: '#000000',
-          headerTitleStyle: {
-            fontFamily: 'Jamsil4',
-            fontSize: 35,
-          },
-        }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );
