@@ -3,9 +3,9 @@ import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../../assets/colors/colors';
-import bloodrecordScreen from '../bloodPage/BloodrecordScreen';
-import MeasureScreen from '../measurePage/MeasureScreen';
+import BloodScreen from '../bloodPage/BloodScreen';
 import MealScreen from '../mealPage/MealScreen';
+import MeasureScreen from '../measurePage/MeasureScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +58,7 @@ const TabNavigation = () => {
       })}>
       <Tab.Screen
         name="내 혈당"
-        component={bloodrecordScreen}
+        component={BloodScreen}
         options={{headerShown: false}}
       />
       <Tab.Screen
