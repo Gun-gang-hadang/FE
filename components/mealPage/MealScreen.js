@@ -4,10 +4,60 @@ import CustomButton from '../common/CustomButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import colors from '../../assets/colors/colors';
 import CameraButton from './CameraButton';
+import axios from 'axios';
+import {launchImageLibrary} from 'react-native-image-picker/src';
 
 function MealScreen() {
   const [pages, setPage] = useState('BUTTONPAGE');
   const [image, setImage] = useState(null);
+
+  const onSelectImage = async () => {
+    const image = {
+      uri: '',
+      type: 'image/jpeg',
+      name: 'meal',
+    };
+
+    //갤러리에서 사진 불러오기
+    await launchImageLibrary({}, res => {
+      image.name = res.assets[0].fileName;
+      image.type = res.assets[0].type;
+      image.uri = res.assets[0].uri;
+
+      const formdata = new FormData();
+      formdata.append('ImgLibrary', image);
+
+      const headers = {
+        'Content-Type':
+          'multipart/form-data; boundary=someArbitraryUniqueString',
+      };
+      console.log(image);
+      console.log(formdata);
+
+      //서버에 폼데이터 전송
+      axios
+        .post('http://localhost:3000/api/v1/analysis/imglibrary', formdata, {
+          headers: headers,
+        })
+        .then(response => {
+          if (response) {
+            console.log(response.data);
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log('Error', error.message);
+          }
+        });
+    });
+  };
+
   if (pages === 'BUTTONPAGE') {
     return (
       <SafeAreaView style={styles.full}>
@@ -26,7 +76,7 @@ function MealScreen() {
           <CustomButton
             title={'음식 사진 가져오기'}
             buttonColor={colors.main}
-            onPress={() => alert('앨범 실행')}
+            onPress={onSelectImage}
           />
         </View>
       </SafeAreaView>
