@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Tab from './Tab';
 import BloodrecordScreen from '../bloodPage/BloodrecordScreen';
 import MealAnalysis from '../mealPage/MealAnalysis';
-
+import BloodScreen from '../bloodPage/BloodScreen';
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
@@ -13,6 +13,12 @@ const RootStack = () => {
       <Stack.Screen
         name="Write"
         component={BloodrecordScreen}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="BloodScreen"
+        component={BloodScreen}
         options={{headerShown: false}}
       />
 
