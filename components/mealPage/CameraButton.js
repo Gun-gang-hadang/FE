@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import {Text, StyleSheet, View, Pressable} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
 function CameraButton(props) {
+  const navigation = useNavigation();
   const addImage = () => {
     launchCamera({}, response => {
+      props.onSplash(true);
       const formdata = new FormData();
       const file = {
         name: response.assets[0].fileName,
@@ -26,10 +29,12 @@ function CameraButton(props) {
           console.log('요청실패');
           console.log(error);
         });
-
+      props.onSplash(false);
       console.log(response);
+      console.log(formdata._parts[0][1]);
       props.onPushImage(response);
-      props.onChangePage('IMAGEPAGE');
+      //props.onChangePage('IMAGEPAGE');
+      navigation.navigate('MealAnalysis', {uri: response.assets[0].uri});
     });
   };
   return (

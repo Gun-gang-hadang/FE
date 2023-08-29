@@ -7,11 +7,12 @@ import colors from '../../assets/colors/colors';
 import CameraButton from './CameraButton';
 import axios from 'axios';
 import {launchImageLibrary} from 'react-native-image-picker/src';
+import Splash from '../screenChange/Splash';
 
 function MealScreen() {
   const [pages, setPage] = useState('BUTTONPAGE');
-  const [image, setImage] = useState(null);
-
+  const [cameraImage, setCameraImage] = useState(null);
+  const [splash, setSplash] = useState(null);
   const navigation = useNavigation();
 
   const onSelectImage = async () => {
@@ -62,7 +63,6 @@ function MealScreen() {
       navigation.navigate('MealAnalysis', {uri: res.assets[0].uri});
     });
   };
-
   if (pages === 'BUTTONPAGE') {
     return (
       <SafeAreaView style={styles.full}>
@@ -74,8 +74,11 @@ function MealScreen() {
             onChangePage={_page => {
               setPage(_page);
             }}
+            onSplash={_splash => {
+              setSplash(_splash);
+            }}
             onPushImage={_state => {
-              setImage(_state);
+              setCameraImage(_state);
             }}
           />
           <CustomButton
@@ -90,13 +93,14 @@ function MealScreen() {
   if (pages === 'IMAGEPAGE') {
     return (
       <SafeAreaView style={styles.full}>
-        <Image source={{uri: image.assets[0].uri}} style={styles.bg} />
+        <Image source={{uri: cameraImage.assets[0].uri}} style={styles.bg} />
         <Button
           title="뒤로"
           onPress={() => {
             setPage('BUTTONPAGE');
           }}
         />
+        {splash && <Splash />}
       </SafeAreaView>
     );
   }
