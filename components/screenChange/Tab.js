@@ -40,7 +40,7 @@ const TabNavigation = () => {
           borderColor: '#000000',
           borderTopWidth: 2,
         },
-
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
