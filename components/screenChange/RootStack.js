@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Tab from './Tab';
-import colors from '../../assets/colors/colors';
 import BloodrecordScreen from '../bloodPage/BloodrecordScreen';
+import MealAnalysis from '../mealPage/MealAnalysis';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +13,12 @@ const RootStack = () => {
       <Stack.Screen
         name="Write"
         component={BloodrecordScreen}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="MealAnalysis"
+        component={MealAnalysis}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

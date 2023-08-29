@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {Text, View, StyleSheet, Image, Button} from 'react-native';
 import CustomButton from '../common/CustomButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -10,6 +11,8 @@ import {launchImageLibrary} from 'react-native-image-picker/src';
 function MealScreen() {
   const [pages, setPage] = useState('BUTTONPAGE');
   const [image, setImage] = useState(null);
+
+  const navigation = useNavigation();
 
   const onSelectImage = async () => {
     const image = {
@@ -55,6 +58,8 @@ function MealScreen() {
             console.log('Error', error.message);
           }
         });
+
+      navigation.navigate('MealAnalysis', {uri: res.assets[0].uri});
     });
   };
 

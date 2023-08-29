@@ -5,29 +5,39 @@ import {useState} from 'react';
 const DailyRecord = ({record}) => {
   return (
     <View>
-      {record.map(data => {
-        const [bloodLevel, setBloodLevel] = useState('');
-        setBloodLevel(data.level);
+      {record &&
+        record.map(data => {
+          let bloodLevel = data.level;
+          let textColor = '';
+          if (bloodLevel == '정상') {
+            textColor = '#2DAA3A';
+          } else if (bloodLevel == '주의') {
+            textColor = 'yellow';
+          } else if (bloodLevel == '위험') {
+            textColor = 'red';
+          }
 
-        return (
-          <View key={data.id} style={styles.container}>
-            <View style={styles.dateSection}>
-              <Text style={styles.date}>{data.date}</Text>
-            </View>
-
-            <View style={styles.bloodContainer}>
-              <View style={styles.bloodLeft}>
-                <Text style={styles.time}>{data.time}</Text>
+          return (
+            <View key={data.id} style={styles.container}>
+              <View style={styles.dateSection}>
+                <Text style={styles.date}>{data.date}</Text>
               </View>
 
-              <View style={styles.bloodRight}>
-                <Text style={styles.bloodsugar}>{data.bloodsugar}mg</Text>
-                <Text style={styles.level}>{data.level}</Text>
+              <View style={styles.bloodContainer}>
+                <View style={styles.bloodLeft}>
+                  <Text style={styles.time}>{data.time}</Text>
+                </View>
+
+                <View style={styles.bloodRight}>
+                  <Text style={styles.bloodsugar}>{data.bloodsugar}mg</Text>
+                  <Text style={[styles.level, {color: textColor}]}>
+                    {data.level}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        );
-      })}
+          );
+        })}
     </View>
   );
 };
@@ -84,7 +94,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-SemiBold',
   },
   level: {
-    color: '#2DAA3A',
     fontSize: 30,
     fontFamily: 'Pretendard-SemiBold',
   },
