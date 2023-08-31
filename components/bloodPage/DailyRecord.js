@@ -1,13 +1,12 @@
 import {View, Text, StyleSheet} from 'react-native';
 import colors from '../../assets/colors/colors';
-import {useState} from 'react';
 
 const DailyRecord = ({record}) => {
   return (
     <View>
       {record &&
         record.map(data => {
-          let bloodLevel = data.level;
+          let bloodLevel = data.state;
           let textColor = '';
           if (bloodLevel == '정상') {
             textColor = '#2DAA3A';
@@ -18,7 +17,7 @@ const DailyRecord = ({record}) => {
           }
 
           return (
-            <View key={data.id} style={styles.container}>
+            <View key={data.post_id} style={styles.container}>
               <View style={styles.dateSection}>
                 <Text style={styles.date}>{data.date}</Text>
               </View>
@@ -29,9 +28,9 @@ const DailyRecord = ({record}) => {
                 </View>
 
                 <View style={styles.bloodRight}>
-                  <Text style={styles.bloodsugar}>{data.bloodsugar}mg</Text>
+                  <Text style={styles.bloodsugar}>{data.sugarLevel}mg</Text>
                   <Text style={[styles.level, {color: textColor}]}>
-                    {data.level}
+                    {data.state}
                   </Text>
                 </View>
               </View>
