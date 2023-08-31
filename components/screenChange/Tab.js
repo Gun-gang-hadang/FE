@@ -7,8 +7,6 @@ import BloodScreen from '../bloodPage/BloodScreen';
 import MealScreen from '../mealPage/MealScreen';
 import MeasureScreen from '../measurePage/MeasureScreen';
 
-import MealAnalysis from '../mealPage/MealAnalysis';
-
 const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {

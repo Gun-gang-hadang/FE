@@ -129,7 +129,7 @@ const BloodrecordScreen = () => {
     formdata.append('file', file);
     axios({
       method: 'post',
-      url: 'https://geonganghadang/api/v1/mysugar/save',
+      url: 'http://local:8080/api/v1/mysugar/save',
       data: formdata,
     })
       .then(result => {
