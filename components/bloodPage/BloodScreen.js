@@ -8,7 +8,7 @@ import axios from 'axios';
 const BloodScreen = () => {
   const [dailyRecord, setDailyRecord] = useState([]);
   useEffect(() => {
-    axios.get('/bloodrecord').then(response => {
+    axios.get('/api/v1/mysugar').then(response => {
       setDailyRecord(response.data);
     });
   });
@@ -16,7 +16,7 @@ const BloodScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.titleText}>혈당 기록</Text>
+        <Text style={styles.titleText}>내 혈당</Text>
         <DailyRecord record={dailyRecord} />
       </ScrollView>
 
