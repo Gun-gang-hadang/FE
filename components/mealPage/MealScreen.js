@@ -40,7 +40,7 @@ function MealScreen() {
 
       //서버에 폼데이터 전송
       axios
-        .post('http://localhost:3000/api/v1/analysis/imglibrary', formdata, {
+        .post('hhttp://local:8080/api/v1/analyze/image', formdata, {
           headers: headers,
         })
         .then(response => {

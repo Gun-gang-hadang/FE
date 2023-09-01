@@ -18,7 +18,7 @@ function CameraButton(props) {
       formdata.append('file', file);
       axios({
         method: 'post',
-        url: 'https://geonganghadang.api/v1/analysis/camera',
+        url: 'http://local:8080/api/v1/analyze/image',
         data: formdata,
       })
         .then(result => {
