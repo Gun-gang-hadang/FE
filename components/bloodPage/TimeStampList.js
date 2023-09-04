@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 function TimeStampList(props) {
@@ -13,6 +13,12 @@ function TimeStampList(props) {
     newTimestamp[findIndex].done = true;
     props.setStamp(newTimestamp);
   };
+
+  // onSelect 초기값 설정
+  useEffect(() => {
+    onSelect(1);
+  }, []);
+
   return (
     <FlatList
       style={styles.list}
@@ -21,15 +27,15 @@ function TimeStampList(props) {
         <TouchableOpacity
           onPress={() => onSelect(item.id)}
           style={{
-            backgroundColor: item.done ? '#FFC38C' : '#FFEB8A',
+            backgroundColor: item.done ? '#FD9639' : '#FFEB8A',
             borderRadius: 10,
           }}>
           <Text
             style={{
-              fontSize: 25,
-              margin: 5,
+              fontSize: item.done ? 26 : 20,
+              margin: item.done ? 10 : 6,
               textAlign: 'center',
-              color: '#381B00',
+              color: item.done ? '#000000' : '#807645',
               fontWeight: 'bold',
             }}>
             {item.text}

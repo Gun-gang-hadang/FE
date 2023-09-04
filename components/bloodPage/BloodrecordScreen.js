@@ -1,32 +1,33 @@
 import React, {useState} from 'react';
 import DatePicker from 'react-native-date-picker';
-import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  TextInput,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Pressable, TextInput,} from 'react-native';
 import TimeStampList from './TimeStampList';
+import CustomAlert from '../common/CustomAlert';
 
 const BloodrecordScreen = () => {
   const navigation = useNavigation();
   //혈당
-  const [bloodnum, setBloodnum] = useState('0');
+  const [bloodnum, setBloodnum] = useState();
   const [id, setId] = useState(1);
-  var bloodstate = '혈당을 입력해주세요.';
+  var bloodstate = '상태';
   var textcolor = '#381B00';
+  //혈당 입력 안했을 때
+  const [showAlert, setShowAlert] = useState(false);
+  const handleShowAlert = () => {setShowAlert(true);};
+  const handleCloseAlert = () => {setShowAlert(false);};
+  const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
+  const titleStyleWhenNonActive = {color: '#7F6B5'};
+  const buttonStyleWhenActive = {backgroundColor: '#FD9639'};
+  const titleStyleWhenActive = {color: 'black'};
 
   //날짜
   const [open, setOpen] = useState(false);
   const [today, setToday] = useState(new Date());
 
   var year = today.getFullYear();
-  var month = today.getMonth() + 1;
-  var date = today.getDate();
+  var month = (today.getMonth() + 1).toString().padStart(2, '0');
+  var date = today.getDate().toString().padStart(2, '0');
   var day = today.getDay();
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
   var todayLabel = week[day];
@@ -43,6 +44,7 @@ const BloodrecordScreen = () => {
   const onCancel = () => {
     setOpen(false);
   };
+
   const [timestamp, setTimestamp] = useState([
     {id: 1, text: '공복', done: false},
     {id: 2, text: '아침 식사 전', done: false},
@@ -51,18 +53,17 @@ const BloodrecordScreen = () => {
     {id: 5, text: '점심 식사 후', done: false},
     {id: 6, text: '저녁 식사 전', done: false},
     {id: 7, text: '저녁 식사 후', done: false},
-    {id: 8, text: '자기 전', done: false},
+    {id: 8, text: '취침 전', done: false},
   ]);
+
   let findIndex = timestamp.findIndex(item => item.id === id);
   var num = parseInt(bloodnum);
   if (timestamp[findIndex].text === '공복') {
-    if (num === 0) {
-      bloodstate = '혈당을 입력해주세요.';
-    } else if (num <= 100) {
+    if (num <= 100) {
       bloodstate = '정상';
     } else if (num >= 126) {
       bloodstate = '위험';
-    } else {
+    } else if (100 < num && num < 126){
       bloodstate = '주의';
     }
   }
@@ -71,13 +72,11 @@ const BloodrecordScreen = () => {
     timestamp[findIndex].text === '점심 식사 후' ||
     timestamp[findIndex].text === '저녁 식사 후'
   ) {
-    if (num === 0) {
-      bloodstate = '혈당을 입력해주세요.';
-    } else if (num <= 139) {
+    if (num <= 139) {
       bloodstate = '정상';
     } else if (num >= 200) {
       bloodstate = '위험';
-    } else {
+    } else if (139 < num && num < 200) {
       bloodstate = '주의';
     }
   }
@@ -86,70 +85,85 @@ const BloodrecordScreen = () => {
     timestamp[findIndex].text === '점심 식사 전' ||
     timestamp[findIndex].text === '저녁 식사 전'
   ) {
-    if (num === 0) {
-      bloodstate = '혈당을 입력해주세요.';
-    } else if (num <= 130) {
+    if (num <= 130) {
       bloodstate = '정상';
     } else if (num >= 180) {
       bloodstate = '위험';
-    } else {
+    } else if (130 < num && num < 180) {
       bloodstate = '주의';
     }
   }
-  if (timestamp[findIndex].text === '자기 전') {
-    if (num === 0) {
-      bloodstate = '혈당을 입력해주세요.';
-    } else if (num <= 120) {
+  if (timestamp[findIndex].text === '취침 전') {
+    if (num <= 120) {
       bloodstate = '정상';
     } else if (num >= 160) {
       bloodstate = '위험';
-    } else {
+    } else if (120 < num && num < 160) {
       bloodstate = '주의';
     }
   }
-  if (num === 0) {
-    bloodstate = '혈당을 입력해주세요';
-  } else if (bloodstate === '정상') {
-    textcolor = 'green';
+  if (bloodstate === '정상') {
+    textcolor = '#2DAA3A';
   } else if (bloodstate === '주의') {
-    textcolor = '#FF5E00';
+    textcolor = '#FF7A00';
   } else if (bloodstate === '위험') {
-    textcolor = 'red';
+    textcolor = '#EF0000';
   }
-  console.log(bloodnum);
+  else {
+    textcolor = '#807645';
+  }
+  console.log(num);
+  const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive : buttonStyleWhenActive;
+  const titleStyle = isNaN(num) ? titleStyleWhenNonActive : titleStyleWhenActive;
+
   //서버 전송
   const postData = () => {
-    const formdata = new FormData();
-    const file = {
-      date: year + '년 ' + month + '월 ' + date + '일',
-      time: timestamp[findIndex].text,
-      bloodsugar: bloodnum,
-      level: bloodstate,
-    };
-    formdata.append('file', file);
-    axios({
-      method: 'post',
-      url: 'http://local:8080/api/v1/mysugar/save',
-      data: formdata,
-    })
-      .then(result => {
-        console.log('요청성공');
-        console.log(result);
+    if (isNaN(num)) {
+      handleShowAlert();
+    }
+    else {
+      const data = {
+        date: year + '년 ' + month + '월 ' + date + '일',
+        time: timestamp[findIndex].text,
+        sugarLevel: bloodnum,
+        state: bloodstate,
+      };
+      fetch('/api/v1/mysugar/save', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => {
-        console.log('요청실패');
-        console.log(error);
-      });
-
-    console.log(formdata._parts[0][1]);
-    navigation.navigate('BloodScreen');
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((result) => {
+          console.log('요청 성공');
+          console.log(result);
+          navigation.navigate('BloodScreen');
+        })
+        .catch(error => {
+          if (error.response) {
+            console.error("Backend Error:", error.response.data);
+            console.error("Status Code:", error.response.status);
+          } else if (error.request) {
+            console.error("Network Error:", error.request);
+          } else {
+            console.error("Request Error:", error.message);
+          }
+        });
+    }
   };
   return (
     <SafeAreaView style={styles.full}>
       <Text style={styles.titleText}>혈당 기록</Text>
       <View style={styles.block1}>
-        <Pressable onPress={onPressDate} style={styles.dateText}>
-          <Text>
+        <Pressable onPress={onPressDate}>
+          <Text style={styles.dateText}>
             {year}년 {month}월 {date}일 {todayLabel}요일
           </Text>
         </Pressable>
@@ -172,7 +186,7 @@ const BloodrecordScreen = () => {
                   styles.statetext,
                   {
                     color: textcolor,
-                    fontSize: bloodstate === '혈당을 입력해주세요' ? 20 : 30,
+                    fontSize: 30,
                   },
                 ]}>
                 {bloodstate}
@@ -181,7 +195,6 @@ const BloodrecordScreen = () => {
             <View
               style={{
                 flexDirection: 'row',
-                paddingTop: 30,
               }}>
               <TextInput
                 style={styles.input}
@@ -191,8 +204,8 @@ const BloodrecordScreen = () => {
                 style={{
                   color: '#381B00',
                   fontFamily: 'Pretendard-SemiBold',
-                  marginTop: 22,
-                  marginLeft: 10,
+                  marginLeft: 3,
+                  marginTop: 20,
                   fontSize: 20,
                 }}>
                 mg/dL
@@ -205,9 +218,14 @@ const BloodrecordScreen = () => {
       <Text style={styles.subinfotext}>
         * ‘00식사 후’는 식후 2시간 뒤에 잰 혈당을 기록해주십시오.
       </Text>
-      <Pressable style={styles.button} onPress={postData}>
-        <Text style={[styles.title, {color: '#381B00'}]}>저장하기</Text>
+      <Pressable style={[styles.button, buttonStyle]} onPress={postData}>
+        <Text style={[styles.title, titleStyle]}>저장하기</Text>
       </Pressable>
+      <CustomAlert
+        visible={showAlert}
+        message="혈당 수치를 입력해주세요."
+        onClose={handleCloseAlert}
+      />
       <DatePicker
         modal
         open={open}
@@ -215,7 +233,10 @@ const BloodrecordScreen = () => {
         date={today}
         //onDateChange={setToday}
         onConfirm={onConfirm}
+        confirmText='확인'
         onCancel={onCancel}
+        cancelText='취소'
+        
         locale="ko"
       />
     </SafeAreaView>
@@ -230,6 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: '#381B00',
     margin: 20,
+    marginTop: 45,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -238,14 +260,15 @@ const styles = StyleSheet.create({
     color: '#381B00',
     fontFamily: 'Pretendard-SemiBold',
     margin: 8,
-    marginLeft: 12,
+    marginRight: 30,
     textAlign: 'center',
   },
   block1: {
     backgroundColor: '#FFEB8A',
     borderRadius: 15,
     margin: 15,
-    height: 300,
+    paddingTop: 10,
+    height: 260,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -261,16 +284,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     borderTopColor: '#381B00',
-    borderTopWidth: 0.7,
+    borderTopWidth: 1,
   },
   item1: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     borderRightColor: 'black',
-    borderRightWidth: 0.5,
-    paddingTop: 40,
-    paddingBottom: 40,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    marginTop: 40,
+    marginBottom: 30,
+    marginLeft: 20,
+    marginRight: 15,
+    paddingBottom: 10,
   },
   item2: {
     flex: 1,
@@ -279,9 +306,6 @@ const styles = StyleSheet.create({
   },
   item3: {
     width: 190,
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'black',
-    paddingBottom: 30,
   },
   button: {
     alignItems: 'center',
@@ -289,8 +313,9 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginLeft: 50,
-    marginRight: 50,
+    marginTop: 140,
+    marginLeft: 15,
+    marginRight: 15,
     height: 50,
     //box-shadow
     shadowColor: 'black',
@@ -300,26 +325,26 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 2.22,
-
     elevation: 3,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'TheJamsil3-Regular',
+    color: '#7F6B5',
   },
   subinfotext: {
-    fontSize: 13,
+    fontSize: 20,
     fontFamily: 'TheJamsil3-Regular',
     color: '#381B00',
-    marginLeft: 49,
-    marginBottom: 3,
+    marginLeft: 30,
+    marginTop: 15,
   },
   dateText: {
-    fontSize: 20,
+    fontSize: 23,
     color: 'black',
     fontFamily: 'Pretendard-SemiBold',
     margin: 8,
-    marginLeft: 12,
+    marginLeft: 20,
   },
   input: {
     fontSize: 30,
