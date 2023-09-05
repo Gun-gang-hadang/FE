@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {iconPath} from './iconPath';
+import { StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native';
+import { iconPath } from './iconPath';
 
 function Buttons(props) {
-  let new_id; //초기화
+  let new_id; // 초기화
   const buttonClickedHandler = () => {
     if (props.arrow && !(props.id === 0)) {
       new_id = props.id - 1;
@@ -16,6 +16,10 @@ function Buttons(props) {
       props.onPlayed();
     }
   };
+
+  // Define the text content based on left or right arrow
+  const buttonText = props.arrow ? '이전' : '다음';
+
   return (
     <TouchableOpacity
       onPress={buttonClickedHandler}
@@ -24,50 +28,74 @@ function Buttons(props) {
         !props.arrow && styles.buttonRight,
         props.arrow && props.id === 0 && styles.edgePage,
         !props.arrow && props.id === 5 && styles.edgePage,
-      ]}>
-      <Image
-        source={props.arrow ? iconPath.arrowLeft : iconPath.arrowRight}
-        style={[
-          styles.image,
-          props.arrow ? styles.arrowLeft : styles.arrowRight,
-          props.arrow && props.id === 0 && styles.opacity,
-          !props.arrow && props.id === 5 && styles.opacity,
-        ]}
-      />
+      ]}
+    >
+      <View style={styles.buttonContent}>
+        {props.arrow && (
+          <>
+            <Image
+              source={iconPath.arrowLeft}
+              style={[styles.image, styles.arrowLeft, props.id === 0 && styles.opacity]}
+            />
+            <Text style={[styles.buttonText, props.id === 0 ? styles.edgePageText : null]}>
+              {buttonText}
+            </Text>
+          </>
+        )}
+        {!props.arrow && (
+          <>
+            <Text style={[styles.buttonText, props.id === 5 ? styles.edgePageText : null]}>
+              {buttonText}
+            </Text>
+            <Image
+              source={iconPath.arrowRight}
+              style={[styles.image, styles.arrowRight, props.id === 5 && styles.opacity]}
+            />
+          </>
+        )}
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   roundButton: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
+    width: 110,
+    height: 50,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FD9639',
-    margin: 20,
-    marginBottom: 15,
+    marginTop: 50,
+    marginLeft: 15,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'black',
+    marginLeft: 10,
+    marginRight: 10,
+    fontSize: 25,
+    fontFamily: 'Pretendard-Regular',
   },
   buttonRight: {
-    marginLeft: 42,
+    marginLeft: 30,
   },
   image: {
-    width: 50,
-    height: 50,
-  },
-  arrowRight: {
-    marginLeft: 10,
-  },
-  arrowLeft: {
-    marginRight: 10,
+    width: 25,
+    height: 25,
   },
   edgePage: {
     backgroundColor: '#FED5AF',
   },
+  edgePageText: {
+    color: '#7F6B58', // Change the text color for edgePage style
+  },
   opacity: {
     opacity: 0.5,
-  },
+  }
 });
 
 export default Buttons;

@@ -7,13 +7,13 @@ const DailyRecord = ({record}) => {
       {record &&
         record.map(data => {
           let bloodLevel = data.state;
-          let textColor = '';
+          let textColor;
           if (bloodLevel == '정상') {
             textColor = '#2DAA3A';
           } else if (bloodLevel == '주의') {
-            textColor = 'yellow';
+            textColor = '#FF7A00';
           } else if (bloodLevel == '위험') {
-            textColor = 'red';
+            textColor = '#EF0000';
           }
 
           return (
@@ -28,10 +28,10 @@ const DailyRecord = ({record}) => {
                 </View>
 
                 <View style={styles.bloodRight}>
-                  <Text style={styles.bloodsugar}>{data.sugarLevel}mg</Text>
                   <Text style={[styles.level, {color: textColor}]}>
                     {data.state}
                   </Text>
+                  <Text style={styles.bloodsugar}>{data.sugarLevel}mg</Text>
                 </View>
               </View>
             </View>
@@ -45,7 +45,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.sub1,
     borderRadius: 15,
-    margin: 10,
+    margin: 7,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
 
     //그림자 설정
     elevation: 5,
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
     padding: 8,
-    paddingLeft: 10,
+    paddingLeft: 20,
   },
 
   bloodContainer: {
@@ -95,6 +98,7 @@ const styles = StyleSheet.create({
   level: {
     fontSize: 30,
     fontFamily: 'Pretendard-SemiBold',
+    marginBottom: -10,
   },
 
   //   button: {
