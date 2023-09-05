@@ -56,12 +56,14 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 35,
     color: 'black',
-    margin: 20,
+    marginLeft: 20,
+    marginTop: 45,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
   block: {
     flexDirection: 'row',
+    marginBottom: 18,
   },
 });
 

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
+import {View,
   ScrollView,
   TouchableHighlight,
   Modal,
   Text,
   Image,
-  StyleSheet,
-} from 'react-native';
+  StyleSheet,} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
@@ -15,14 +13,30 @@ import axios from 'axios';
 
 const BloodScreen = () => {
   const [dailyRecord, setDailyRecord] = useState([]);
-
   const [modalVisible, setModalVisible] = useState(false);
-
   useEffect(() => {
-    axios.get('/api/v1/mysugar').then(response => {
-      setDailyRecord(response.data);
+    fetch("/api/v1/mysugar")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); // Assuming the response is in JSON format
+    })
+    .then((data) => {
+      // Handle the data
+      setDailyRecord(data);
+    }, [dailyRecord])
+    .catch((error) => {
+      if (error.response) {
+        console.error("Backend Error:", error.response.data);
+        console.error("Status Code:", error.response.status);
+      } else if (error.request) {
+        console.error("Network Error:", error.request);
+      } else {
+        console.error("Request Error:", error.message);
+      }
     });
-  }, [dailyRecord]);
+  });
 
   return (
     <View style={styles.container}>
@@ -47,20 +61,18 @@ const BloodScreen = () => {
           </View>
         </View>
       </Modal>
-
       <ScrollView>
         <View style={styles.headerContainer}>
           <Text style={styles.titleText}>내 혈당</Text>
           <TouchableHighlight
-            style={styles.openButton}
-            onPress={() => {
-              setModalVisible(true);
-            }}
-            underlayColor="#F67B28">
-            <Text style={styles.textStyle}>혈당 수치 기준</Text>
-          </TouchableHighlight>
-        </View>
-
+              style={styles.openButton}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.textStyle}>혈당 수치 기준</Text>
+            </TouchableHighlight>
+          </View>
         <DailyRecord record={dailyRecord} />
       </ScrollView>
 
@@ -69,30 +81,32 @@ const BloodScreen = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
+    marginLeft: 5,
+    marginRight: 5,
   },
-
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-
   titleText: {
     fontSize: 35,
     color: 'black',
-    margin: 20,
+    margin: 15,
+    marginTop: 40,
+    marginBottom: 25,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
-
   openButton: {
     height: 40,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 20,
+    marginTop: 40,
     marginRight: 20,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
