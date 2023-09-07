@@ -8,12 +8,13 @@ import CameraButton from './CameraButton';
 import axios from 'axios';
 import {launchImageLibrary} from 'react-native-image-picker/src';
 import Splash from '../screenChange/Splash';
+import MealAnalysis from './MealAnalysis';
 
 function MealScreen() {
   const [pages, setPage] = useState('BUTTONPAGE');
   const [cameraImage, setCameraImage] = useState(null);
   const [splash, setSplash] = useState(null);
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
   const onSelectImage = async () => {
     const image = {
@@ -40,7 +41,7 @@ function MealScreen() {
 
       //서버에 폼데이터 전송
       axios
-        .post('hhttp://local:8080/api/v1/analyze/image', formdata, {
+        .post('http://local:8080/api/v1/analyze/image', formdata, {
           headers: headers,
         })
         .then(response => {
@@ -59,8 +60,9 @@ function MealScreen() {
             console.log('Error', error.message);
           }
         });
-
-      navigation.navigate('MealAnalysis', {uri: res.assets[0].uri});
+      setCameraImage(res);
+      setPage('MEALANALYSISPAGE');
+      //navigation.navigate('MealAnalysis', {uri: res.assets[0].uri});
     });
   };
   if (pages === 'BUTTONPAGE') {
@@ -90,18 +92,11 @@ function MealScreen() {
       </SafeAreaView>
     );
   }
-  if (pages === 'IMAGEPAGE') {
+  if (pages === 'MEALANALYSISPAGE') {
     return (
-      <SafeAreaView style={styles.full}>
-        <Image source={{uri: cameraImage.assets[0].uri}} style={styles.bg} />
-        <Button
-          title="뒤로"
-          onPress={() => {
-            setPage('BUTTONPAGE');
-          }}
-        />
-        {splash && <Splash />}
-      </SafeAreaView>
+      <MealAnalysis onChangeMode={_state => {
+        setPage(_state);
+      }} urisource={cameraImage.assets[0].uri} />
     );
   }
 }

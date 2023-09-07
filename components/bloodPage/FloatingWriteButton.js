@@ -1,13 +1,13 @@
-import {useNavigation} from '@react-navigation/native';
+//import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../../assets/colors/colors';
 
-const FloatingWriteButton = () => {
-  const navigation = useNavigation();
+const FloatingWriteButton = (props) => {
+  //const navigation = useNavigation();
   const onPress = () => {
-    navigation.navigate('Write');
+    props.onChangeMode(false);
   };
 
   return (

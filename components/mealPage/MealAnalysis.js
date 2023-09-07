@@ -1,31 +1,42 @@
-import {View, ScrollView, Text, Image, StyleSheet} from 'react-native';
+import {View, ScrollView, Text, Image, StyleSheet,Pressable} from 'react-native';
 import colors from '../../assets/colors/colors';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import Nutrition from './Nutrition';
-import {useRoute} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+//import colors from '../../assets/colors/colors';
+//import {useRoute} from '@react-navigation/native';
 
-const MealAnalysis = () => {
+const MealAnalysis = (props) => {
   const [nutrition, setNutrition] = useState([]);
   const [order, setOrder] = useState('');
-
-  const route = useRoute();
-  const receivedUri = route.params.uri;
+  const onPress = () => {
+    props.onChangeMode('BUTTONPAGE');
+  };
+  //const route = useRoute();
+  const receivedUri = props.urisource;
 
   useEffect(() => {
     axios.get('/mealAnalysis').then(response => {
       setOrder(response.data.order);
       setNutrition(response.data.foods);
 
-      // setNutrition(response.data);
+      setNutrition(response.data);
     });
   });
 
   return (
     <View style={styles.container}>
       <ScrollView>
+        <View style={{flexDirection:'row'}}>
         <Text style={styles.title}>식단 분석</Text>
-
+          <Pressable
+          style={({pressed}) => [styles.button]}
+          android_ripple={{color: 'white'}}
+          onPress={onPress}>
+          <Icon name="arrow-back-outline" size={55} style={styles.icon} />
+          </Pressable>
+        </View>
         <View style={styles.imageContainer}>
           <Image
             source={{uri: receivedUri}}
@@ -109,6 +120,19 @@ const styles = StyleSheet.create({
 
     //그림자 설정
     elevation: 5,
+  },
+  button: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    marginLeft: 170,
+    marginTop: 12,
+    backgroundColor: '#FEF4EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    color: 'black',
   },
 });
 

@@ -11,17 +11,15 @@ const RootStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Tab" component={Tab} options={{headerShown: false}} />
       <Stack.Screen
-        name="Write"
-        component={BloodrecordScreen}
-        options={{headerShown: false}}
-      />
-
-      <Stack.Screen
         name="BloodScreen"
         component={BloodScreen}
-        options={{headerShown: false}}
+        options={{headerShown: false,tabBarStyle: {display: 'flex'}}}
       />
-
+      <Stack.Screen
+        name="Write"
+        component={BloodrecordScreen}
+        options={{headerShown: false,tabBarStyle: {display: 'flex'}}}
+      />
       <Stack.Screen
         name="MealAnalysis"
         component={MealAnalysis}

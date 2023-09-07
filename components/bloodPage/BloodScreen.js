@@ -9,13 +9,15 @@ import {View,
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
+import BloodrecordScreen from './BloodrecordScreen';
 import axios from 'axios';
 
 const BloodScreen = () => {
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [bloodpage,setBloodpage]=useState(true);
   useEffect(() => {
-    fetch("/api/v1/mysugar")
+    fetch("http://10.0.2.2:8080/api/v1/mysugar")
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -37,7 +39,7 @@ const BloodScreen = () => {
       }
     });
   });
-
+if(bloodpage){
   return (
     <View style={styles.container}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -76,10 +78,18 @@ const BloodScreen = () => {
         <DailyRecord record={dailyRecord} />
       </ScrollView>
 
-      <FloatingWriteButton />
+      <FloatingWriteButton onChangeMode={_state => {
+    setBloodpage(_state);
+  }}/>
     </View>
   );
+ }else{
+  return (<BloodrecordScreen onChangeMode={_state => {
+    setBloodpage(_state);
+  }}/>);
+ }
 };
+
 
 
 const styles = StyleSheet.create({
