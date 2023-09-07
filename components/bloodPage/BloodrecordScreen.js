@@ -5,7 +5,7 @@ import { SafeAreaView, StyleSheet, Text, View, Pressable, TextInput,} from 'reac
 import TimeStampList from './TimeStampList';
 import CustomAlert from '../common/CustomAlert';
 
-const BloodrecordScreen = () => {
+const BloodrecordScreen = (props) => {
   const navigation = useNavigation();
   //혈당
   const [bloodnum, setBloodnum] = useState();
@@ -17,7 +17,7 @@ const BloodrecordScreen = () => {
   const handleShowAlert = () => {setShowAlert(true);};
   const handleCloseAlert = () => {setShowAlert(false);};
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
-  const titleStyleWhenNonActive = {color: '#7F6B5'};
+  const titleStyleWhenNonActive = {color: '#6E6E6E'};
   const buttonStyleWhenActive = {backgroundColor: '#FD9639'};
   const titleStyleWhenActive = {color: 'black'};
 
@@ -128,7 +128,7 @@ const BloodrecordScreen = () => {
         sugarLevel: bloodnum,
         state: bloodstate,
       };
-      fetch('/api/v1/mysugar/save', {
+      fetch('http://10.0.2.2:8080/api/v1/mysugar/save', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -144,7 +144,7 @@ const BloodrecordScreen = () => {
         .then((result) => {
           console.log('요청 성공');
           console.log(result);
-          navigation.navigate('BloodScreen');
+          props.onChangeMode(true);
         })
         .catch(error => {
           if (error.response) {
@@ -236,6 +236,7 @@ const BloodrecordScreen = () => {
         confirmText='확인'
         onCancel={onCancel}
         cancelText='취소'
+        title='날짜 선택'
         
         locale="ko"
       />
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginTop: 140,
+    marginTop: 40,
     marginLeft: 15,
     marginRight: 15,
     height: 50,

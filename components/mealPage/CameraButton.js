@@ -33,8 +33,8 @@ function CameraButton(props) {
       console.log(response);
       console.log(formdata._parts[0][1]);
       props.onPushImage(response);
-      //props.onChangePage('IMAGEPAGE');
-      navigation.navigate('MealAnalysis', {uri: response.assets[0].uri});
+      props.onChangePage('MEALANALYSISPAGE');
+      //navigation.navigate('MealAnalysis', {uri: response.assets[0].uri});
     });
   };
   return (
