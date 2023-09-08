@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View,
+import {
+  View,
   ScrollView,
   TouchableHighlight,
   Modal,
   Text,
   Image,
-  StyleSheet,} from 'react-native';
+  StyleSheet,
+} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
@@ -15,58 +17,66 @@ import axios from 'axios';
 const BloodScreen = () => {
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [bloodpage,setBloodpage]=useState(true);
+  const [bloodpage, setBloodpage] = useState(true);
   useEffect(() => {
-    fetch("http://10.0.2.2:8080/api/v1/mysugar")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json(); // Assuming the response is in JSON format
-    })
-    .then((data) => {
-      // Handle the data
-      setDailyRecord(data);
-    }, [dailyRecord])
-    .catch((error) => {
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        console.error("Status Code:", error.response.status);
-      } else if (error.request) {
-        console.error("Network Error:", error.request);
-      } else {
-        console.error("Request Error:", error.message);
-      }
-    });
+    fetch('http://10.0.2.2:8080/api/v1/mysugar')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // Assuming the response is in JSON format
+      })
+      .then(
+        data => {
+          // Handle the data
+          setDailyRecord(data);
+        },
+        [dailyRecord],
+      )
+      .catch(error => {
+        if (error.response) {
+          console.error('Backend Error:', error.response.data);
+          console.error('Status Code:', error.response.status);
+        } else if (error.request) {
+          console.error('Network Error:', error.request);
+        } else {
+          console.error('Request Error:', error.message);
+        }
+      });
   });
-if(bloodpage){
-  return (
-    <View style={styles.container}>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TouchableHighlight
-              style={styles.closeButton}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-              underlayColor="#E8E8E8">
-              <Text style={styles.closeText}>x</Text>
-            </TouchableHighlight>
+  if (bloodpage) {
+    return (
+      <View style={styles.container}>
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableHighlight
+                style={styles.closeButton}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+                underlayColor="#E8E8E8">
+                <Text style={styles.closeText}>x</Text>
+              </TouchableHighlight>
 
-            <Text style={styles.modalTitle}>혈당 수치 기준</Text>
-            <Image
-              source={require('./bloodStandard.png')}
-              style={styles.modalImage}
-            />
-            <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
+              <Text style={styles.modalTitle}>혈당 수치 기준</Text>
+              <Image
+                source={require('./bloodStandard.png')}
+                style={styles.modalImage}
+              />
+              <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
+              <Text style={styles.modalTextLeft}>
+                ※ 당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고 건강하당
+                앱을 활용한 식단 조절을 통해 정상 수치에 도달하는 것을 장기적인
+                목표로 설정하는 것을 추천드립니다.
+              </Text>
+            </View>
           </View>
-        </View>
-      </Modal>
-      <ScrollView>
-        <View style={styles.headerContainer}>
-          <Text style={styles.titleText}>내 혈당</Text>
-          <TouchableHighlight
+        </Modal>
+        <ScrollView>
+          <View style={styles.headerContainer}>
+            <Text style={styles.titleText}>내 혈당</Text>
+            <TouchableHighlight
               style={styles.openButton}
               onPress={() => {
                 setModalVisible(true);
@@ -75,22 +85,26 @@ if(bloodpage){
               <Text style={styles.textStyle}>혈당 수치 기준</Text>
             </TouchableHighlight>
           </View>
-        <DailyRecord record={dailyRecord} />
-      </ScrollView>
+          <DailyRecord record={dailyRecord} />
+        </ScrollView>
 
-      <FloatingWriteButton onChangeMode={_state => {
-    setBloodpage(_state);
-  }}/>
-    </View>
-  );
- }else{
-  return (<BloodrecordScreen onChangeMode={_state => {
-    setBloodpage(_state);
-  }}/>);
- }
+        <FloatingWriteButton
+          onChangeMode={_state => {
+            setBloodpage(_state);
+          }}
+        />
+      </View>
+    );
+  } else {
+    return (
+      <BloodrecordScreen
+        onChangeMode={_state => {
+          setBloodpage(_state);
+        }}
+      />
+    );
+  }
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -158,6 +172,11 @@ const styles = StyleSheet.create({
     color: '#000000',
     marginBottom: 15,
     textAlign: 'center',
+  },
+
+  modalTextLeft: {
+    color: '#000000',
+    marginBottom: 15,
   },
 
   modalImage: {
