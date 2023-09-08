@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
-import { SafeAreaView, StyleSheet, Text, View, Pressable, TextInput,} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TextInput,
+} from 'react-native';
 import TimeStampList from './TimeStampList';
 import CustomAlert from '../common/CustomAlert';
 
-const BloodrecordScreen = (props) => {
+const BloodrecordScreen = props => {
   const navigation = useNavigation();
   //혈당
   const [bloodnum, setBloodnum] = useState();
@@ -14,8 +21,12 @@ const BloodrecordScreen = (props) => {
   var textcolor = '#381B00';
   //혈당 입력 안했을 때
   const [showAlert, setShowAlert] = useState(false);
-  const handleShowAlert = () => {setShowAlert(true);};
-  const handleCloseAlert = () => {setShowAlert(false);};
+  const handleShowAlert = () => {
+    setShowAlert(true);
+  };
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
   const titleStyleWhenNonActive = {color: '#6E6E6E'};
   const buttonStyleWhenActive = {backgroundColor: '#FD9639'};
@@ -63,7 +74,7 @@ const BloodrecordScreen = (props) => {
       bloodstate = '정상';
     } else if (num >= 126) {
       bloodstate = '위험';
-    } else if (100 < num && num < 126){
+    } else if (100 < num && num < 126) {
       bloodstate = '주의';
     }
   }
@@ -108,20 +119,22 @@ const BloodrecordScreen = (props) => {
     textcolor = '#FF7A00';
   } else if (bloodstate === '위험') {
     textcolor = '#EF0000';
-  }
-  else {
+  } else {
     textcolor = '#807645';
   }
   console.log(num);
-  const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive : buttonStyleWhenActive;
-  const titleStyle = isNaN(num) ? titleStyleWhenNonActive : titleStyleWhenActive;
+  const buttonStyle = isNaN(num)
+    ? buttonStyleWhenNonActive
+    : buttonStyleWhenActive;
+  const titleStyle = isNaN(num)
+    ? titleStyleWhenNonActive
+    : titleStyleWhenActive;
 
   //서버 전송
   const postData = () => {
     if (isNaN(num)) {
       handleShowAlert();
-    }
-    else {
+    } else {
       const data = {
         date: year + '년 ' + month + '월 ' + date + '일',
         time: timestamp[findIndex].text,
@@ -141,19 +154,19 @@ const BloodrecordScreen = (props) => {
           }
           return response.json();
         })
-        .then((result) => {
+        .then(result => {
           console.log('요청 성공');
           console.log(result);
           props.onChangeMode(true);
         })
         .catch(error => {
           if (error.response) {
-            console.error("Backend Error:", error.response.data);
-            console.error("Status Code:", error.response.status);
+            console.error('Backend Error:', error.response.data);
+            console.error('Status Code:', error.response.status);
           } else if (error.request) {
-            console.error("Network Error:", error.request);
+            console.error('Network Error:', error.request);
           } else {
-            console.error("Request Error:", error.message);
+            console.error('Request Error:', error.message);
           }
         });
     }
@@ -233,11 +246,10 @@ const BloodrecordScreen = (props) => {
         date={today}
         //onDateChange={setToday}
         onConfirm={onConfirm}
-        confirmText='확인'
+        confirmText="확인"
         onCancel={onCancel}
-        cancelText='취소'
-        title='날짜 선택'
-        
+        cancelText="취소"
+        title="날짜 선택"
         locale="ko"
       />
     </SafeAreaView>
@@ -314,7 +326,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginTop: 40,
+    marginTop: 25,
     marginLeft: 15,
     marginRight: 15,
     height: 50,
