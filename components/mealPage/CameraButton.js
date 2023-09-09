@@ -16,19 +16,46 @@ function CameraButton(props) {
         uri: response.assets[0].uri,
       };
       formdata.append('file', file);
-      axios({
-        method: 'post',
-        url: 'http://local:8080/api/v1/analyze/image',
-        data: formdata,
+      // axios({
+      //   method: 'post',
+      //   url: 'http://local:8080/api/v1/analyze/image',
+      //   data: formdata,
+      // })
+      //   .then(result => {
+      //     console.log('요청성공');
+      //     console.log(result);
+      //   })
+      //   .catch(error => {
+      //     console.log('요청실패');
+      //     console.log(error);
+      //   });
+
+      //서버에 이미지 전송
+      fetch('http://10.0.2.2:8080/api/v1/analyze/image', {
+        method: 'POST',
+        body: formdata,
       })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(result => {
-          console.log('요청성공');
+          console.log('요청 성공');
           console.log(result);
         })
         .catch(error => {
-          console.log('요청실패');
-          console.log(error);
+          if (error.response) {
+            console.error('Backend Error:', error.response.data);
+            console.error('Status Code:', error.response.status);
+          } else if (error.request) {
+            console.error('Network Error:', error.request);
+          } else {
+            console.error('Request Error:', error.message);
+          }
         });
+
       props.onSplash(false);
       console.log(response);
       console.log(formdata._parts[0][1]);
