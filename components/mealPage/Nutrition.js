@@ -7,15 +7,18 @@ const Nutrition = ({nutrition}) => {
       {nutrition &&
         nutrition.map(data => {
           return (
-            <View key={data.id} style={styles.nutrientBox}>
+            <View key={data.food_id} style={styles.nutrientBox}>
               <View style={styles.foodBox}>
-                <Text style={styles.foodName}>{data.food}</Text>
+                <Text style={styles.foodName}>{data.name}</Text>
+                <Text style={styles.foodAmount}>
+                  {data.amount} / {data.gram}
+                </Text>
               </View>
 
               <View style={styles.foodNutrientBox}>
                 <Text style={styles.nutrientText}>칼로리: {data.kcal}kcal</Text>
-                <Text style={styles.nutrientText}>탄수화물: {data.carbo}g</Text>
-                <Text style={styles.nutrientText}>단백질: {data.prot}g</Text>
+                <Text style={styles.nutrientText}>탄수화물: {data.carbs}g</Text>
+                <Text style={styles.nutrientText}>단백질: {data.protein}g</Text>
                 <Text style={styles.nutrientText}>지방: {data.fat}g</Text>
               </View>
             </View>
@@ -45,8 +48,14 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 24,
     fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 10,
+    marginBottom: 5,
     fontWeight: 'bold',
+  },
+
+  foodAmount: {
+    color: '#000000',
+    fontSize: 18,
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   foodNutrientBox: {
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
 });
 
