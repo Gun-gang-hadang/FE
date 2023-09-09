@@ -32,34 +32,60 @@ function MealScreen() {
       const formdata = new FormData();
       formdata.append('ImgLibrary', image);
 
-      const headers = {
-        'Content-Type':
-          'multipart/form-data; boundary=someArbitraryUniqueString',
-      };
-      console.log(image);
-      console.log(formdata);
+      // const headers = {
+      //   'Content-Type':
+      //     'multipart/form-data; boundary=someArbitraryUniqueString',
+      // };
+      // console.log(image);
+      // console.log(formdata);
 
       //서버에 폼데이터 전송
-      axios
-        .post('http://local:8080/api/v1/analyze/image', formdata, {
-          headers: headers,
-        })
+      // axios
+      //   .post('http://10.0.2.2:8080/api/v1/analyze/image', formdata, {
+      //     headers: headers,
+      //   })
+      //   .then(response => {
+      //     if (response) {
+      //       console.log(response.data);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     if (error.response) {
+      //       console.log(error.response.data);
+      //       console.log(error.response.status);
+      //       console.log(error.response.headers);
+      //     } else if (error.request) {
+      //       console.log(error.request);
+      //     } else {
+      //       console.log('Error', error.message);
+      //     }
+      //   });
+
+      fetch('http://10.0.2.2:8080/api/v1/analyze/image', {
+        method: 'POST',
+        body: formdata,
+      })
         .then(response => {
-          if (response) {
-            console.log(response.data);
+          if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
           }
+          return response.json();
+        })
+        .then(result => {
+          console.log('요청 성공');
+          console.log(result);
         })
         .catch(error => {
           if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            console.error('Backend Error:', error.response.data);
+            console.error('Status Code:', error.response.status);
           } else if (error.request) {
-            console.log(error.request);
+            console.error('Network Error:', error.request);
           } else {
-            console.log('Error', error.message);
+            console.error('Request Error:', error.message);
           }
         });
+
       setCameraImage(res);
       setPage('MEALANALYSISPAGE');
       //navigation.navigate('MealAnalysis', {uri: res.assets[0].uri});
@@ -94,9 +120,12 @@ function MealScreen() {
   }
   if (pages === 'MEALANALYSISPAGE') {
     return (
-      <MealAnalysis onChangeMode={_state => {
-        setPage(_state);
-      }} urisource={cameraImage.assets[0].uri} />
+      <MealAnalysis
+        onChangeMode={_state => {
+          setPage(_state);
+        }}
+        urisource={cameraImage.assets[0].uri}
+      />
     );
   }
 }
