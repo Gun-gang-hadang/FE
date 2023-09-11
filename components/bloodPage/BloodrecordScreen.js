@@ -1,36 +1,41 @@
 import React, {useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  TextInput,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput,} from 'react-native';
 import TimeStampList from './TimeStampList';
 import CustomAlert from '../common/CustomAlert';
+import config from '../config';
+
+const proxyUrl = config.proxyUrl;
 
 const BloodrecordScreen = props => {
   const navigation = useNavigation();
-  //혈당
+  
+  // 혈당
   const [bloodnum, setBloodnum] = useState();
   const [id, setId] = useState(1);
   var bloodstate = '상태';
   var textcolor = '#381B00';
-  //혈당 입력 안했을 때
+  
+  // 잘못된 입력에 대한 alert
   const [showAlert, setShowAlert] = useState(false);
-  const handleShowAlert = () => {
+  const [alertMessage, setAlertMessage] = useState('');
+  const handleShowAlert = (message) => { 
+    setAlertMessage(message);
     setShowAlert(true);
   };
-  const handleCloseAlert = () => {
-    setShowAlert(false);
-  };
+  const handleCloseAlert = () => { setShowAlert(false);};
+
+  // 저장하기 버튼 활성화/비활성화 ui
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
   const titleStyleWhenNonActive = {color: '#6E6E6E'};
   const buttonStyleWhenActive = {backgroundColor: '#FD9639'};
   const titleStyleWhenActive = {color: 'black'};
+
+  // 저장취소
+  const onPress = () => {
+    props.onChangeMode('BLOODLIST');
+  };
 
   //날짜
   const [open, setOpen] = useState(false);
@@ -42,10 +47,11 @@ const BloodrecordScreen = props => {
   var day = today.getDay();
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
   var todayLabel = week[day];
-  //var displayDate={year}년 {month}월 {date}일 {todayLabel}요일
+
   const onPressDate = () => {
     setOpen(true);
   };
+
   const onConfirm = selectedDate => {
     setOpen(false);
     setToday(selectedDate);
@@ -123,25 +129,26 @@ const BloodrecordScreen = props => {
     textcolor = '#807645';
   }
   console.log(num);
-  const buttonStyle = isNaN(num)
-    ? buttonStyleWhenNonActive
-    : buttonStyleWhenActive;
-  const titleStyle = isNaN(num)
-    ? titleStyleWhenNonActive
-    : titleStyleWhenActive;
+
+  const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive: buttonStyleWhenActive;
+  const titleStyle = isNaN(num) ? titleStyleWhenNonActive: titleStyleWhenActive;
 
   //서버 전송
   const postData = () => {
-    if (isNaN(num)) {
-      handleShowAlert();
-    } else {
+    if (isNaN(bloodnum)) {
+      handleShowAlert("입력 값을 다시 확인해주세요.");
+    } 
+    else if (isNaN(num)) {
+      handleShowAlert("혈당 수치를 입력해주세요.");
+    }
+    else {
       const data = {
         date: year + '년 ' + month + '월 ' + date + '일',
         time: timestamp[findIndex].text,
         sugarLevel: bloodnum,
         state: bloodstate,
       };
-      fetch('http://10.0.2.2:8080/api/v1/mysugar/save', {
+      fetch(proxyUrl + '/api/v1/mysugar/save', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -229,14 +236,18 @@ const BloodrecordScreen = props => {
       </View>
       <Text style={styles.subinfotext}>* 공복은 8시간 이상 금식입니다.</Text>
       <Text style={styles.subinfotext}>
-        * ‘00식사 후’는 식후 2시간 뒤에 잰 혈당을 기록해주십시오.
+        * ‘00 식사 후’는 식후 2시간 뒤에 잰 혈당을
       </Text>
+      <Text style={styles.subinfotextsecondline}>기록해주십시오.</Text>
       <Pressable style={[styles.button, buttonStyle]} onPress={postData}>
         <Text style={[styles.title, titleStyle]}>저장하기</Text>
       </Pressable>
+      <Pressable style={[styles.buttonCancel]} onPress={onPress}>
+        <Text style={[styles.buttonCancelText]}>입력취소</Text>
+      </Pressable>
       <CustomAlert
         visible={showAlert}
-        message="혈당 수치를 입력해주세요."
+        message={alertMessage}
         onClose={handleCloseAlert}
       />
       <DatePicker
@@ -264,7 +275,8 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: '#381B00',
     margin: 20,
-    marginTop: 45,
+    marginLeft: 25,
+    marginTop: 40,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -279,8 +291,10 @@ const styles = StyleSheet.create({
   block1: {
     backgroundColor: '#FFEB8A',
     borderRadius: 15,
-    margin: 15,
+    marginTop: 10,
+    margin: 20,
     paddingTop: 10,
+    width: 370,
     height: 260,
     //box-shadow
     shadowColor: 'black',
@@ -306,16 +320,18 @@ const styles = StyleSheet.create({
     borderRightColor: 'black',
     borderRightWidth: 1,
     borderLeftWidth: 1,
-    marginTop: 40,
+    marginTop: 45,
     marginBottom: 30,
-    marginLeft: 20,
-    marginRight: 15,
-    paddingBottom: 10,
+    marginLeft: 30,
+    marginRight: 40,
+    paddingTop: 8,
+    paddingBottom: 7,
   },
   item2: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 20,
   },
   item3: {
     width: 190,
@@ -326,10 +342,10 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginTop: 25,
+    marginTop: 120,
     marginLeft: 15,
     marginRight: 15,
-    height: 50,
+    height: 55,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -340,10 +356,35 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
   },
-  title: {
-    fontSize: 24,
+  buttonCancel: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f1f1f1',
+    margin: 15,
+    borderRadius: 10,
+    marginTop: 0,
+    marginLeft: 15,
+    marginRight: 15,
+    height: 55,
+    //box-shadow
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  buttonCancelText: {
+    fontSize: 26,
     fontFamily: 'TheJamsil3-Regular',
-    color: '#7F6B5',
+    color: '#8E8E8E',
+  },
+  title: {
+    fontSize: 26,
+    fontFamily: 'TheJamsil3-Regular',
+    color: '#7F6B58',
   },
   subinfotext: {
     fontSize: 20,
@@ -351,6 +392,13 @@ const styles = StyleSheet.create({
     color: '#381B00',
     marginLeft: 30,
     marginTop: 15,
+  },
+  subinfotextsecondline: {
+    fontSize: 20,
+    fontFamily: 'TheJamsil3-Regular',
+    color: '#381B00',
+    marginLeft: 45,
+    marginTop: 7,
   },
   dateText: {
     fontSize: 23,

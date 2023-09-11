@@ -1,11 +1,4 @@
-import {
-  View,
-  ScrollView,
-  Text,
-  Image,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {View, ScrollView, Text, Image, StyleSheet, Pressable,} from 'react-native';
 import colors from '../../assets/colors/colors';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
@@ -13,31 +6,25 @@ import Nutrition from './Nutrition';
 import Icon from 'react-native-vector-icons/Ionicons';
 //import colors from '../../assets/colors/colors';
 //import {useRoute} from '@react-navigation/native';
+import config from '../config';
+
+const proxyUrl = config.proxyUrl;
 
 const MealAnalysis = props => {
-  const [nutrition, setNutrition] = useState([]);
   const [order, setOrder] = useState('');
-  const onPress = () => {
-    props.onChangeMode('BUTTONPAGE');
-  };
-  //const route = useRoute();
+  const [nutrition, setNutrition] = useState([]);
+  const onPress = () => { props.onChangeMode('BUTTONPAGE');};
   const receivedUri = props.urisource;
-
-  // useEffect(() => {
-  //   axios.get('/mealAnalysis').then(response => {
-  //     setOrder(response.data.order);
-  //     setNutrition(response.data.foods);
-
-  //     setNutrition(response.data);
-  //   });
-  // });
+  
+  const imageWidth = props.imageWidth;
+  const imageHeight = props.imageHeight;
 
   //서버에서 음식 정보 받아오기
   useEffect(() => {
-    fetch('http://10.0.2.2:8080/api/v1/analyze')
+    fetch(proxyUrl + '/api/v1/analyze/nutrient')
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('get nutrient Network response was not ok');
         }
         return response.json(); // Assuming the response is in JSON format
       })
@@ -75,7 +62,11 @@ const MealAnalysis = props => {
         <View style={styles.imageContainer}>
           <Image
             source={{uri: receivedUri}}
-            style={styles.foodImage}
+            style={{
+              width: imageWidth > imageHeight ? '90%' : undefined,
+              height: imageHeight > imageWidth ? '95%' : undefined,
+              aspectRatio: imageWidth / imageHeight,
+            }}
             resizeMode="contain"
           />
         </View>
@@ -85,7 +76,7 @@ const MealAnalysis = props => {
           <Text style={styles.orderText}>{order}</Text>
         </View>
         <View style={styles.nutrient}>
-          <Text style={styles.subTitle}>영양소 확인</Text>
+          <Text style={styles.subTitle}>영양소를 확인해보세요</Text>
           <Nutrition nutrition={nutrition} />
 
           {/* ui 테스트
@@ -118,6 +109,8 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: 'black',
     margin: 20,
+    marginLeft: 25,
+    marginTop:40,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -125,19 +118,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  foodImage: {
-    width: '100%',
-    height: undefined,
-    aspectRatio: 1,
-    margin: 10,
+    marginBottom: 5,
+    marginTop: 15,
   },
 
   order: {
     backgroundColor: colors.sub1,
     borderRadius: 15,
-    margin: 10,
+    margin: 15,
+    marginBottom: 0,
 
     alignItems: 'center',
     padding: 15,
@@ -149,8 +138,9 @@ const styles = StyleSheet.create({
   subTitle: {
     color: '#000000',
     fontSize: 27,
-    fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 10,
+    fontFamily: 'TheJamsil4-Medium',
+    marginBottom: 15,
+    marginTop: 10,
     textAlign: 'center',
   },
 
@@ -164,8 +154,9 @@ const styles = StyleSheet.create({
 
   nutrient: {
     backgroundColor: colors.sub1,
+    // backgroundColor: '#f6e1b6',
     borderRadius: 15,
-    margin: 10,
+    margin: 15,
     padding: 15,
 
     //그림자 설정
@@ -175,8 +166,8 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     borderRadius: 50,
-    marginLeft: 170,
-    marginTop: 12,
+    marginLeft: 180,
+    marginTop: 29,
     backgroundColor: '#FEF4EB',
     justifyContent: 'center',
     alignItems: 'center',
@@ -187,13 +178,13 @@ const styles = StyleSheet.create({
 
   //Nutrition
 
-  nutrientBox: {
-    borderRadius: 15,
-    backgroundColor: colors.sub2,
-    flexDirection: 'row',
-    padding: 15,
-    margin: 10,
-  },
+  // nutrientBox: {
+  //   borderRadius: 15,
+  //   backgroundColor: colors.sub2,
+  //   flexDirection: 'row',
+  //   padding: 10,
+  //   margin: 10,
+  // },
 
   foodBox: {
     flex: 1,
@@ -227,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
     marginBottom: 5,
+    marginTop: 5,
   },
 });
 

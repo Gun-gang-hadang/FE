@@ -31,9 +31,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
-    width: 300,
+    width: 180,
     padding: 25,
     marginTop: 30,
+    marginLeft: 15,
 
     //box-shadow
     shadowColor: '#000',
@@ -49,5 +50,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontFamily: 'TheJamsil3-Regular',
+    textAlign: 'center',
   },
 });

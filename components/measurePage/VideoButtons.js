@@ -6,8 +6,13 @@ function VideoButtons(props) {
   const buttonClickedHandler = () => {
     props.onChangeMode(!props.val);
   };
+
+  const buttonBackgroundColor = props.val ? '#FD9639' : '#FED5AF';
+
   return (
-    <TouchableOpacity onPress={buttonClickedHandler} style={styles.pButton}>
+    <TouchableOpacity 
+      onPress={buttonClickedHandler} 
+      style={[styles.pButton, {backgroundColor: buttonBackgroundColor}]}>
       <Image
         source={props.val ? iconPath.playButton : iconPath.pausedButton}
         style={styles.image}
@@ -23,10 +28,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FED5AF',
     opacity: 0.8,
     margin: 10,
-    marginLeft: 37,
+    marginLeft: 47,
     marginTop: 40,
     marginBottom: 0,
   },
