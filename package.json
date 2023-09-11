@@ -2,7 +2,6 @@
   "name": "GeonGangHaDangPro",
   "version": "0.0.1",
   "private": true,
-  "proxy": "http://localhost:8080",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -23,7 +22,7 @@
     "react-native-date-picker": "^4.2.14",
     "react-native-image-picker": "^5.6.1",
     "react-native-modal-datetime-picker": "^17.1.0",
-    "react-native-popup-dialog": "^0.18.3",
+    "react-native-popup-dialog": "^0.7.23",
     "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "^3.25.0",
     "react-native-shadow-2": "^7.0.8",

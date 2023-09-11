@@ -13,13 +13,17 @@ import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
 import BloodrecordScreen from './BloodrecordScreen';
 import axios from 'axios';
+import config from '../config';
+
+const proxyUrl = config.proxyUrl;
 
 const BloodScreen = () => {
+  const [pages, setPage] = useState('BLOODLIST');
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [bloodpage, setBloodpage] = useState(true);
   useEffect(() => {
-    fetch('http://10.0.2.2:8080/api/v1/mysugar')
+    fetch(proxyUrl + '/api/v1/mysugar')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -66,9 +70,13 @@ const BloodScreen = () => {
               />
               <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
               <Text style={styles.modalTextLeft}>
-                ※ 당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고 건강하당
-                앱을 활용한 식단 조절을 통해 정상 수치에 도달하는 것을 장기적인
-                목표로 설정하는 것을 추천드립니다.
+                ※  당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고 
+              </Text>
+              <Text style={styles.modalTextLeftSecondLine}>
+                건강하당 앱을 활용한 식단 조절을 통해 정상 수치에 도달하는
+              </Text>
+              <Text style={styles.modalTextLeftSecondLine}>
+                것을 장기적인 목표로 설정하는 것을 추천드립니다.
               </Text>
             </View>
           </View>
@@ -120,7 +128,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 35,
     color: 'black',
-    margin: 15,
+    margin: 20,
     marginTop: 40,
     marginBottom: 25,
     fontFamily: 'TheJamsil4-Medium',
@@ -130,8 +138,8 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 40,
-    marginRight: 20,
+    marginTop: 38,
+    marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
     borderRadius: 20,
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 20,
   },
 
   centeredView: {
@@ -157,32 +165,45 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 10,
-    alignItems: 'center',
+    paddingBottom: 20,
   },
 
   modalTitle: {
     color: '#000000',
     paddingVertical: 20,
     textAlign: 'center',
-    fontSize: 23,
+    fontSize: 25,
     fontWeight: 'bold',
+    marginBottom: -5,
   },
 
   modalText: {
     color: '#000000',
-    marginBottom: 15,
+    marginTop: -35,
+    marginBottom: 30,
     textAlign: 'center',
+    fontFamily: 'Pretendard-Blod',
   },
 
   modalTextLeft: {
     color: '#000000',
-    marginBottom: 15,
+    fontSize: 16,
+    marginLeft: 10,
+    fontFamily: 'Pretendard-Bold',
+  },
+
+  modalTextLeftSecondLine: {
+    color: '#000000',
+    fontSize: 16,
+    marginLeft: 27,
+    fontFamily: 'Pretendard-Bold',
   },
 
   modalImage: {
     width: '95%',
     aspectRatio: 2, // 가로세로 비율 유지
     resizeMode: 'contain',
+    alignItems: 'center',
   },
 
   closeButton: {

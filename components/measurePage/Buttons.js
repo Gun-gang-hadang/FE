@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Regular',
   },
   buttonRight: {
-    marginLeft: 30,
+    marginLeft: 37,
   },
   image: {
     width: 25,
