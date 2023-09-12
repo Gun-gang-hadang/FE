@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.sub1,
     borderRadius: 15,
-    margin: 7,
-    marginBottom: 10,
+    margin: 13,
+    marginBottom: 8,
     marginLeft: 10,
     marginRight: 10,
 
@@ -54,15 +54,18 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   dateSection: {
+    // backgroundColor: '#ffd88a',
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     width: '100%',
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1,
+    borderBottomColor: '#381B00',
+    borderBottomWidth: 0.7,
   },
   date: {
     width: '100%',
     color: '#000000',
     fontSize: 20,
-    fontFamily: 'Pretendard-SemiBold',
+    fontFamily: 'Pretendard-Bold',
     padding: 8,
     paddingLeft: 20,
   },
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
     borderLeftColor: '#000000',
-    borderLeftWidth: 1,
+    borderLeftWidth: 0.7,
   },
   bloodsugar: {
     color: '#000000',
@@ -98,29 +101,8 @@ const styles = StyleSheet.create({
   level: {
     fontSize: 30,
     fontFamily: 'Pretendard-SemiBold',
-    marginBottom: -10,
+    marginBottom: -6,
   },
-
-  //   button: {
-  //     alignItems: 'center',
-  //     justifyContent: 'center',
-  //     margin: 15,
-  //     borderRadius: 10,
-  //     backgroundColor: '#FED5AF',
-  //     marginLeft: 50,
-  //     marginRight: 50,
-  //     height: 50,
-  //     //box-shadow
-  //     shadowColor: 'black',
-  //     shadowOffset: {
-  //       width: 0,
-  //       height: 1,
-  //     },
-  //     shadowOpacity: 1,
-  //     shadowRadius: 2.22,
-
-  //     elevation: 3,
-  //   },
 });
 
 export default DailyRecord;

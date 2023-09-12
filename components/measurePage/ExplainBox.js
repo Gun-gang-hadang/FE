@@ -19,7 +19,7 @@ const ExplainBox = ({id}) => {
 
 const styles = StyleSheet.create({
   block: {
-    marginTop: 340,
+    marginTop: 420,
     marginLeft: 20,
     marginRight: 20,
     backgroundColor: '#FFEB8A',

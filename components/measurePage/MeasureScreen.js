@@ -56,8 +56,9 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 35,
     color: 'black',
-    marginLeft: 20,
-    marginTop: 45,
+    margin: 20,
+    marginLeft: 25,
+    marginTop: 40,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },

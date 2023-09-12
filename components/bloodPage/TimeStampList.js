@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {FlatList, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 function TimeStampList(props) {
+  const flatListRef = useRef(null);
   //const [selected, setSelected] = useState(new Map());
   const onSelect = id => {
     props.setID(id);
@@ -12,6 +13,13 @@ function TimeStampList(props) {
     }
     newTimestamp[findIndex].done = true;
     props.setStamp(newTimestamp);
+
+    // 선택되면 자동으로 스크롤 되게
+    flatListRef.current.scrollToIndex({
+      index: findIndex,
+      animated: true,
+      viewPosition: 0.5,
+    });
   };
 
   // onSelect 초기값 설정
@@ -21,6 +29,7 @@ function TimeStampList(props) {
 
   return (
     <FlatList
+      ref={flatListRef}
       style={styles.list}
       data={props.timestamp}
       renderItem={({item}) => (
@@ -36,7 +45,7 @@ function TimeStampList(props) {
               margin: item.done ? 10 : 6,
               textAlign: 'center',
               color: item.done ? '#000000' : '#807645',
-              fontWeight: 'bold',
+              fontFamily: item.done ? 'Pretendard-SemiBold' : 'Pretendard-Regular'
             }}>
             {item.text}
           </Text>

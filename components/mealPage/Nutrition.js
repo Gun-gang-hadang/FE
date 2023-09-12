@@ -11,7 +11,7 @@ const Nutrition = ({nutrition}) => {
               <View style={styles.foodBox}>
                 <Text style={styles.foodName}>{data.name}</Text>
                 <Text style={styles.foodAmount}>
-                  {data.amount} / {data.gram}
+                  {data.amount} / {data.gram}g
                 </Text>
               </View>
 
@@ -30,11 +30,13 @@ const Nutrition = ({nutrition}) => {
 
 const styles = StyleSheet.create({
   nutrientBox: {
-    borderRadius: 15,
-    backgroundColor: colors.sub2,
+    borderRadius: 25,
+    // backgroundColor: colors.sub1,
+    backgroundColor: '#AEE29C',
     flexDirection: 'row',
     padding: 15,
-    margin: 10,
+    paddingBottom: 10,
+    margin: 5,
   },
 
   foodBox: {
@@ -49,7 +51,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Pretendard-SemiBold',
     marginBottom: 5,
-    fontWeight: 'bold',
   },
 
   foodAmount: {
