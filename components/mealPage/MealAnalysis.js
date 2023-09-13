@@ -11,7 +11,7 @@ import config from '../config';
 const proxyUrl = config.proxyUrl;
 
 const MealAnalysis = props => {
-  const [order, setOrder] = useState('');
+  var order='';
   const [nutrition, setNutrition] = useState([]);
   const onPress = () => { props.onChangeMode('BUTTONPAGE');};
   const receivedUri = props.urisource;
@@ -46,6 +46,33 @@ const MealAnalysis = props => {
         }
       });
   });
+
+  //식단순서 계산
+  if(Object.keys(nutrition).length>0)
+  {
+      let kcalOrder=nutrition.sort((a, b) => a.kcal - b.kcal).map((item) => item);
+      //console.log(kcalOrder);
+      let carbsOrder=nutrition.sort((a, b) => a.carbs - b.carbs).map((item) => item);
+      //console.log(carbsOrder);
+      let proteinOrder = nutrition.sort((a, b) => b.protein - a.protein).map((item) => item);
+      let fatOrder = nutrition.sort((a, b) => a.fat - b.fat).map((item) => item);
+      console.log(nutrition);
+    
+      let nutritionSum = nutrition.map(data => {
+        var sum = (kcalOrder.findIndex(i => i.food_id === data.food_id)+1)*2
+        +carbsOrder.findIndex(i => i.food_id === data.food_id)+1
+        +proteinOrder.findIndex(i => i.food_id === data.food_id)+1
+        +fatOrder.findIndex(i => i.food_id === data.food_id)+1;
+        //var food=data.name 
+        return {name: data.name, cal: sum};
+      })
+      nutritionSum.sort((a, b) => a.cal - b.cal); 
+      const sortedSum = nutritionSum;
+      console.log(sortedSum);
+      order+=sortedSum.map((item)=>item.name);
+      console.log(order);
+      order = order.replace(/,/g,' > ');
+  }
 
   return (
     <View style={styles.container}>
