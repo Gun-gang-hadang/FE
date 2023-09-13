@@ -70,7 +70,7 @@ const BloodScreen = () => {
               />
               <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
               <Text style={styles.modalTextLeft}>
-                ※  당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고 
+                ※ 당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고
               </Text>
               <Text style={styles.modalTextLeftSecondLine}>
                 건강하당 앱을 활용한 식단 조절을 통해 정상 수치에 도달하는
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
 
   modalView: {
