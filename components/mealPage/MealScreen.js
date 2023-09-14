@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 26,
+    textAlign: 'center',
     fontFamily: 'Pretendard-SemiBold',
     color: 'black'
   },
