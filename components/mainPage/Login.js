@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Pressable, Image, Text} from 'react-native';
 import colors from '../../assets/colors/colors';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/gghd.png';
 import kakaoLogo from '../../assets/images/kakaoLogo.png';
 import googleLogo from '../../assets/images/googleLogo.png';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
@@ -78,7 +78,6 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={logo} resizeMode="contain" />
-
       <Pressable
         style={[styles.button, {backgroundColor: '#FDDC3F'}]}
         onPress={() => login()}>
@@ -105,6 +104,8 @@ const styles = StyleSheet.create({
   image: {
     marginTop: 50,
     marginBottom: 150,
+    width: 350,
+    height: 100,
   },
 
   button: {
