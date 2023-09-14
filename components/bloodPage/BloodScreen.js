@@ -165,7 +165,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 10,
-    paddingBottom: 20,
+    paddingBottom: 30,
+    marginBottom: 40,
   },
 
   modalTitle: {
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 15,
     marginLeft: 10,
+    marginTop: 20,
     fontFamily: 'Pretendard-SemiBold',
   },
 
