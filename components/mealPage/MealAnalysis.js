@@ -56,7 +56,6 @@ const MealAnalysis = props => {
       //console.log(carbsOrder);
       let proteinOrder = nutrition.sort((a, b) => b.protein - a.protein).map((item) => item);
       let fatOrder = nutrition.sort((a, b) => a.fat - b.fat).map((item) => item);
-      console.log(nutrition);
     
       let nutritionSum = nutrition.map(data => {
         var sum = (kcalOrder.findIndex(i => i.food_id === data.food_id)+1)*2
@@ -68,9 +67,7 @@ const MealAnalysis = props => {
       })
       nutritionSum.sort((a, b) => a.cal - b.cal); 
       const sortedSum = nutritionSum;
-      console.log(sortedSum);
       order+=sortedSum.map((item)=>item.name);
-      console.log(order);
       order = order.replace(/,/g,' → ');
   }
 
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
 
   orderText: {
     color: '#000000',
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Pretendard-SemiBold',
     marginBottom: 10,
     textAlign: 'center',
