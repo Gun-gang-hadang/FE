@@ -136,7 +136,7 @@ const BloodrecordScreen = props => {
   //서버 전송
   const postData = () => {
     if (isNaN(bloodnum)) {
-      handleShowAlert("입력 값을 다시 확인해주세요.");
+      handleShowAlert("혈당 수치는 숫자만 입력할 수 있습니다.");
     } 
     else if (isNaN(num)) {
       handleShowAlert("혈당 수치를 입력해주세요.");

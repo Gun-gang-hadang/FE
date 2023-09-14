@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native';
+import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import {iconPath} from '../measurePage/iconPath';
 
 const CustomAlert = ({ visible, message, onClose }) => {
