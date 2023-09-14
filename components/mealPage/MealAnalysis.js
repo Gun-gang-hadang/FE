@@ -71,7 +71,7 @@ const MealAnalysis = props => {
       console.log(sortedSum);
       order+=sortedSum.map((item)=>item.name);
       console.log(order);
-      order = order.replace(/,/g,' > ');
+      order = order.replace(/,/g,' → ');
   }
 
   return (

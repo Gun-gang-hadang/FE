@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Pressable, Image, Text} from 'react-native';
 import colors from '../../assets/colors/colors';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/gghd.png';
 import kakaoLogo from '../../assets/images/kakaoLogo.png';
 import googleLogo from '../../assets/images/googleLogo.png';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
@@ -14,10 +14,10 @@ const Login = () => {
   //서버 전송
   const postData = result => {
     const data = {
-      id: result.id,
+      loginId: result.id,
       nickname: result.nickname,
     };
-    fetch(proxyUrl + '/login', {
+    fetch(proxyUrl + '/api/v1/login', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
