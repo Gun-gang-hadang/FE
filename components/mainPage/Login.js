@@ -14,10 +14,10 @@ const Login = () => {
   //서버 전송
   const postData = result => {
     const data = {
-      id: result.id,
+      loginId: result.id,
       nickname: result.nickname,
     };
-    fetch(proxyUrl + '/login', {
+    fetch(proxyUrl + '/api/v1/login', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

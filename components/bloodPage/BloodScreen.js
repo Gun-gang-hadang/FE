@@ -12,7 +12,6 @@ import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
 import BloodrecordScreen from './BloodrecordScreen';
-import axios from 'axios';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
 
@@ -188,16 +187,16 @@ const styles = StyleSheet.create({
 
   modalTextLeft: {
     color: '#000000',
-    fontSize: 16,
+    fontSize: 15,
     marginLeft: 10,
-    fontFamily: 'Pretendard-Bold',
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   modalTextLeftSecondLine: {
     color: '#000000',
-    fontSize: 16,
-    marginLeft: 27,
-    fontFamily: 'Pretendard-Bold',
+    fontSize: 15,
+    marginLeft: 23,
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   modalImage: {
