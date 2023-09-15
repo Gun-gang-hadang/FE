@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 30,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 
