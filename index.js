@@ -10,5 +10,5 @@ import Login from './components/mainPage/Login';
 import newnewApp from './newnewApp';
 import {name as appName} from './app.json';
 
-// AppRegistry.registerComponent(appName, () => Login);
-AppRegistry.registerComponent(appName, () => newnewApp);
+AppRegistry.registerComponent(appName, () => Login);
+//AppRegistry.registerComponent(appName, () => newnewApp);
