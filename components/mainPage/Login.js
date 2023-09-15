@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable, Image, Text} from 'react-native';
 import colors from '../../assets/colors/colors';
-import logo from '../../assets/images/gghd.png';
+import textLogo from '../../assets/images/gghd.png';
+import imageLogo from '../../assets/images/logo.png';
 import kakaoLogo from '../../assets/images/kakaoLogo.png';
 import googleLogo from '../../assets/images/googleLogo.png';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import newnewApp from '../../newnewApp';
-
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
@@ -77,41 +77,52 @@ const Login = () => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
       });
   };
-if (pages === 'LOGIN'){
-  return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={logo} resizeMode="contain" />
-      <Pressable
-        style={[styles.button, {backgroundColor: '#FDDC3F'}]}
-        onPress={() => login()}>
-        <Image source={kakaoLogo} />
-        <Text style={styles.btnText}>카카오 로그인</Text>
-      </Pressable>
 
-      <Pressable style={[styles.button, {backgroundColor: '#FFFFFF'}]}>
-        <Image source={googleLogo} />
-        <Text style={styles.btnText}>구글로 로그인</Text>
-      </Pressable>
-    </View>
-  );
-}else{
-  return (<newnewApp />);
-}
+  if (pages === 'LOGIN'){
+    return (
+      <View style={styles.container}>
+        <Image style={styles.logo} source={imageLogo} />
+        <Image style={styles.image} source={textLogo} />
+        <Pressable
+          style={[styles.button, {backgroundColor: '#FDDC3F'}]}
+          onPress={() => login()}>
+          <Image source={kakaoLogo} />
+          <Text style={styles.btnText}>카카오 로그인</Text>
+        </Pressable>
+  
+        <Pressable style={[styles.button, {backgroundColor: '#FFFFFF'}]}>
+          <Image source={googleLogo} />
+          <Text style={styles.btnText}>구글로 로그인</Text>
+        </Pressable>
+      </View>
+    );
+  }
+  else{
+    return (newnewApp() );
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.bg,
   },
 
+  logo: {
+    marginTop: 130,
+    marginBottom: -50,
+    width: 400,
+    resizeMode: "contain",
+    backgroundColor: colors.bg,
+    justifyContent: 'center',
+    
+  },
+
   image: {
-    marginTop: 50,
-    marginBottom: 150,
-    width: 350,
-    height: 100,
+    width: 330,
+    resizeMode: "contain",
+    marginBottom: 10,
   },
 
   button: {
@@ -119,9 +130,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 70,
     paddingVertical: 17,
-    marginBottom: 30,
+    marginBottom: 20,
     alignItems: 'center',
-
     elevation: 3,
   },
 

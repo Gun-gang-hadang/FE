@@ -1,13 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableHighlight,
-  Modal,
-  Text,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import {View, ScrollView, TouchableHighlight, Modal, Text, Image, StyleSheet,} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
