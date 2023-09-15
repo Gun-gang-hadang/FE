@@ -1,16 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable, Image, Text} from 'react-native';
 import colors from '../../assets/colors/colors';
 import logo from '../../assets/images/gghd.png';
 import kakaoLogo from '../../assets/images/kakaoLogo.png';
 import googleLogo from '../../assets/images/googleLogo.png';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
+import newnewApp from '../../newnewApp';
 
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
 
 const Login = () => {
+  const [pages,setPage] = useState('LOGIN');
   //서버 전송
   const postData = result => {
     const data = {
@@ -69,12 +71,13 @@ const Login = () => {
         postData(result);
 
         //내 혈당으로 화면 전환
+        setPage('MAIN');
       })
       .catch(error => {
         console.log(`GetProfile Fail(code:${error.code})`, error.message);
       });
   };
-
+if (pages === 'LOGIN'){
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={logo} resizeMode="contain" />
@@ -91,6 +94,9 @@ const Login = () => {
       </Pressable>
     </View>
   );
+}else{
+  return (<newnewApp />);
+}
 };
 
 const styles = StyleSheet.create({
