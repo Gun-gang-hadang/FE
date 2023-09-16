@@ -55,7 +55,7 @@ const MealAnalysis = props => {
       let carbsOrder=nutrition.sort((a, b) => a.carbs - b.carbs).map((item) => item);
       //console.log(carbsOrder);
       let proteinOrder = nutrition.sort((a, b) => b.protein - a.protein).map((item) => item);
-      let fatOrder = nutrition.sort((a, b) => a.fat - b.fat).map((item) => item);
+      let fatOrder = nutrition.sort((a, b) => b.fat - a.fat).map((item) => item);
     
       let nutritionSum = nutrition.map(data => {
         var sum = (kcalOrder.findIndex(i => i.food_id === data.food_id)+1)*2
