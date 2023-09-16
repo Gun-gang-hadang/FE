@@ -28,7 +28,7 @@ const BloodrecordScreen = props => {
 
   // 저장하기 버튼 활성화/비활성화 ui
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
-  const titleStyleWhenNonActive = {color: '#6E6E6E'};
+  const titleStyleWhenNonActive = {color: '#808080'};
   const buttonStyleWhenActive = {backgroundColor: '#FD9639'};
   const titleStyleWhenActive = {color: 'black'};
 
@@ -128,7 +128,6 @@ const BloodrecordScreen = props => {
   } else {
     textcolor = '#807645';
   }
-  console.log(num);
 
   const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive: buttonStyleWhenActive;
   const titleStyle = isNaN(num) ? titleStyleWhenNonActive: titleStyleWhenActive;
@@ -266,6 +265,7 @@ const BloodrecordScreen = props => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   full: {
     flex: 1,
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     color: '#381B00',
     fontFamily: 'Pretendard-SemiBold',
     margin: 8,
-    marginRight: 30,
+    marginRight: 35,
     textAlign: 'center',
   },
   block1: {
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   buttonCancel: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#d7d7d7',
     margin: 15,
     borderRadius: 10,
     marginTop: 0,
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   buttonCancelText: {
     fontSize: 26,
     fontFamily: 'TheJamsil3-Regular',
-    color: '#8E8E8E',
+    color: '#808080',
   },
   title: {
     fontSize: 26,
@@ -411,6 +411,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
+    borderBottomWidth: 1.5,
+    width: 60,
+    paddingBottom: -14,
+    marginRight: 5,
+    marginLeft: -10,
+    textAlign: 'center',
   },
 });
 
