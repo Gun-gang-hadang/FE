@@ -19,7 +19,7 @@ const BloodScreen = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json(); // Assuming the response is in JSON format
+        return response.json();
       })
       .then(
         data => {
