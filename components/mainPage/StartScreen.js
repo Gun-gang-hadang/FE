@@ -3,6 +3,8 @@ import { View, Image, StyleSheet, Animated, Easing, Pressable, Text } from 'reac
 import colors from '../../assets/colors/colors';
 import imageLogo from '../../assets/images/logo.png';
 import textLogo from '../../assets/images/gghd.png';
+import Login from './Login';
+//import {useNavigation} from '@react-navigation/native';
 
 class StartScreen extends Component {
   constructor(props) {
@@ -11,6 +13,7 @@ class StartScreen extends Component {
       logoPositionY: new Animated.Value(0),
       showText: false,
       showButton: false,
+      mainPage: true,
     };
   }
 
@@ -27,9 +30,12 @@ class StartScreen extends Component {
 
   handleLoginPress = () => {
     // 로그인 페이지로 연결
-  };
+    this.setState({mainPage:false});
+   };
+
 
   render() {
+    if(this.state.mainPage===true){
     return (
       <View style={styles.container}>
         <Animated.Image
@@ -51,7 +57,10 @@ class StartScreen extends Component {
         )}
       </View>
     );
+  }else{
+    return(<Login />);
   }
+}
 }
 
 const styles = StyleSheet.create({
