@@ -19,7 +19,7 @@ const Login = () => {
       loginId: result.id,
       nickname: result.nickname,
     };
-    fetch(proxyUrl + '/api/v1/login', {
+    fetch(proxyUrl + '/api/v1/login/kakao', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
