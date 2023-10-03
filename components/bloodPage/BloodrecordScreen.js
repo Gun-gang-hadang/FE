@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput,} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput, LogBox} from 'react-native';
 import TimeStampList from './TimeStampList';
 import CustomAlert from '../common/CustomAlert';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
+LogBox.ignoreAllLogs();
 
 const BloodrecordScreen = props => {
   const navigation = useNavigation();
@@ -134,12 +135,12 @@ const BloodrecordScreen = props => {
 
   //서버 전송
   const postData = () => {
-    if (isNaN(num)) {
+    if (isNaN(num) && isNaN(bloodnum)) {
       handleShowAlert("혈당 수치를 입력해주세요.");
     }
     else if (isNaN(bloodnum)) {
       handleShowAlert("혈당 수치는 숫자만 입력할 수 있습니다.");
-    } 
+    }
     else {
       const data = {
         date: year + '년 ' + month + '월 ' + date + '일',

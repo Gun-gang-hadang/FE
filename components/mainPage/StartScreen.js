@@ -31,7 +31,7 @@ class StartScreen extends Component {
   handleLoginPress = () => {
     // 로그인 페이지로 연결
     this.setState({mainPage:false});
-   };
+  };
 
 
   render() {
