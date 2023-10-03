@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import ImageManipulator from 'react-native-image-manipulator';
 import CustomButton from '../common/CustomButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import colors from '../../assets/colors/colors';
@@ -14,6 +15,7 @@ const proxyUrl = config.proxyUrl;
 function MealScreen() {
   const [pages, setPage] = useState('BUTTONPAGE');
   const [cameraImage, setCameraImage] = useState(null);
+  const [newCameraImage, setNewCameraImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const formdata = new FormData();
 
@@ -66,7 +68,7 @@ function MealScreen() {
 
   const onTakeImage = async () => {
     setIsLoading(true);
-    launchCamera({}, res => {
+    launchCamera({}, async res => {
       // 사진 안 찍으면 원래 페이지로 돌아옴
       if (res.didCancel) {
         setIsLoading(false);
@@ -78,9 +80,25 @@ function MealScreen() {
         uri: res.assets[0].uri,
       };
 
-      setCameraImage(res);
-      console.log(res)
-      sendImageToBack(image);
+      try {
+        const rotatedImage = await ImageManipulator.manipulate(
+          image.uri,
+          [{ rotate: 270 }],
+          { compress: 1, format: 'jpg' }
+        );
+        rotatedImage.name = image.name;
+        rotatedImage.type = image.type;
+
+        setCameraImage(res);
+        sendImageToBack(rotatedImage);
+        setNewCameraImage(rotatedImage);
+        console.log(res)
+        console.log(image)
+        console.log(rotatedImage)
+      } catch (error) {
+        console.error('이미지 회전 오류:', error);
+        setIsLoading(false);
+      }
     });
   }
 
@@ -104,6 +122,7 @@ function MealScreen() {
       image.uri = res.assets[0].uri;
       
       setCameraImage(res);
+      setNewCameraImage(res.assets[0])
       sendImageToBack(image);
     });
   };
@@ -120,6 +139,8 @@ function MealScreen() {
             <Text style={styles.subinfotextsecondline}>간편하게 식단 관리를 해보세요.</Text>
             <Text style={styles.subinfotext}>* 이미지가 선명하고 깨끗할수록 분석이 정확해집</Text>
             <Text style={styles.subinfotextsecondline}>니다. 너무 기울어진 이미지는 피해주십시오.</Text>
+            <Text style={[styles.subinfotext, {color: '#EF0000'}]}>* 사진을 가로로 찍을 때는 휴대폰을 반시계 방향</Text>
+            <Text style={[styles.subinfotextsecondline, {color: '#EF0000'}]}>으로 돌려주십시오.</Text>
           </View>
           <View style={styles.choiceWay}>
             <TouchableOpacity
@@ -153,7 +174,7 @@ function MealScreen() {
           {cameraImage && cameraImage.assets && mealImage ? (
             <View style={styles.imageContainer}>
               <Image
-                source={{ uri: mealImage.uri }}
+                source={{ uri: newCameraImage.uri }}
                 style={styles.foodImage}
                 resizeMode="contain"
               />
@@ -174,7 +195,7 @@ function MealScreen() {
         onChangeMode={_state => {
           setPage(_state);
         }}
-        urisource={cameraImage.assets[0].uri}
+        urisource={newCameraImage.uri}
         imageWidth={cameraImage.assets[0].width}
         imageHeight={cameraImage.assets[0].height}
       />
