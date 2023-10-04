@@ -89,8 +89,8 @@ const Login = () => {
 
   const googlePostData = result => {
     const data = {
-      loginId: result['user']['uid'],
-      nickname: result['additionalUserInfo']['profile']['name'],
+      loginId: result.user.providerData[0].uid,
+      nickname: result.user.providerData[0].displayName,
     };
     fetch(proxyUrl + '/api/v1/login/google', {
       method: 'POST',
