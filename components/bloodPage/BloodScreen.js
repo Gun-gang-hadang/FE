@@ -1,18 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView, TouchableHighlight, Modal, Text, Image, StyleSheet,} from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableHighlight,
+  Modal,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
 import BloodrecordScreen from './BloodrecordScreen';
 import config from '../config';
+import BloodGraphScreen from './BloodGraphScreen';
 
 const proxyUrl = config.proxyUrl;
-
 const BloodScreen = () => {
-  const [pages, setPage] = useState('BLOODLIST');
+  const [viewes, setView] = useState('BLOODLIST');
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [bloodpage, setBloodpage] = useState(true);
+
+  //서버에서 정보 받아오는 훅
   useEffect(() => {
     fetch(proxyUrl + '/api/v1/mysugar')
       .then(response => {
@@ -39,7 +50,8 @@ const BloodScreen = () => {
         }
       });
   });
-  if (bloodpage) {
+
+  if (bloodpage && viewes === 'BLOODLIST') {
     return (
       <View style={styles.container}>
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -75,14 +87,24 @@ const BloodScreen = () => {
         <ScrollView>
           <View style={styles.headerContainer}>
             <Text style={styles.titleText}>내 혈당</Text>
-            <TouchableHighlight
-              style={styles.openButton}
-              onPress={() => {
-                setModalVisible(true);
-              }}
-              underlayColor="#F67B28">
-              <Text style={styles.textStyle}>혈당 수치 기준</Text>
-            </TouchableHighlight>
+            <View style={{flexDirection: 'column', paddingTop: 25}}>
+              <TouchableHighlight
+                style={styles.openButton}
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+                underlayColor="#F67B28">
+                <Text style={styles.textStyle}>혈당 수치 기준</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.openButton}
+                onPress={() => {
+                  setView('GRAPH');
+                }}
+                underlayColor="#F67B28">
+                <Text style={styles.textStyle}>그래프 보기</Text>
+              </TouchableHighlight>
+            </View>
           </View>
           <DailyRecord record={dailyRecord} />
         </ScrollView>
@@ -94,6 +116,11 @@ const BloodScreen = () => {
         />
       </View>
     );
+  } else if (bloodpage && viewes === 'GRAPH') {
+    return <BloodGraphScreen onChangePage={mode => {
+      setView(mode);
+    }}
+    record={dailyRecord} />;
   } else {
     return (
       <BloodrecordScreen
@@ -112,6 +139,16 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  button: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    marginLeft: 180,
+    marginTop: 29,
+    backgroundColor: '#FEF4EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -126,10 +163,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   openButton: {
-    height: 40,
+    height: 27,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 38,
+    marginTop: 5,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -141,7 +178,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
   },
 
   centeredView: {
@@ -213,7 +250,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // padding: 10,
   },
-
   closeText: {
     color: '#000000',
     fontSize: 20,
