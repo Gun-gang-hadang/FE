@@ -139,6 +139,8 @@ function MealScreen() {
             <Text style={styles.subinfotextsecondline}>간편하게 식단 관리를 해보세요.</Text>
             <Text style={styles.subinfotext}>* 이미지가 선명하고 깨끗할수록 분석이 정확해집</Text>
             <Text style={styles.subinfotextsecondline}>니다. 너무 기울어진 이미지는 피해주십시오.</Text>
+            <Text style={[styles.subinfotext, {color: '#EF0000'}]}>* 사진을 가로로 찍을 때는 휴대폰을 반시계 방향</Text>
+            <Text style={[styles.subinfotextsecondline, {color: '#EF0000'}]}>으로 돌려주십시오.</Text>
           </View>
           <View style={styles.choiceWay}>
             <TouchableOpacity
