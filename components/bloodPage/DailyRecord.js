@@ -1,7 +1,43 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import colors from '../../assets/colors/colors';
+import config from '../config';
+
+const proxyUrl = config.proxyUrl;
 
 const DailyRecord = ({record}) => {
+  // 혈당 기록 삭제
+  const deleteRecord = post_id => {
+    const data = {
+      post_id: post_id,
+    };
+    fetch(proxyUrl + '/api/v1/mysugar' + post_id, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log('요청 성공');
+        console.log(result);
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Backend Error:', error.response.data);
+          console.error('Status Code:', error.response.status);
+        } else if (error.request) {
+          console.error('Network Error:', error.request);
+        } else {
+          console.error('Request Error:', error.message);
+        }
+      });
+  };
   return (
     <View>
       {record &&
@@ -18,8 +54,18 @@ const DailyRecord = ({record}) => {
 
           return (
             <View key={data.post_id} style={styles.container}>
-              <View style={styles.dateSection}>
-                <Text style={styles.date}>{data.date}</Text>
+              <View style={styles.top}>
+                <View style={styles.dateSection}>
+                  <Text style={styles.date}>{data.date}</Text>
+                </View>
+                <View style={styles.trashcan}>
+                  <TouchableOpacity onPress={() => deleteRecord(data.post_id)}>
+                    <Image
+                      source={require('../../assets/images/bin.png')}
+                      style={styles.icon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View style={styles.bloodContainer}>
@@ -53,13 +99,18 @@ const styles = StyleSheet.create({
     //그림자 설정
     elevation: 5,
   },
-  dateSection: {
-    // backgroundColor: '#ffd88a',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+  top: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     borderBottomColor: '#381B00',
     borderBottomWidth: 0.7,
+  },
+  dateSection: {
+    flex: 1,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
   },
   date: {
     width: '100%',
@@ -69,11 +120,19 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 20,
   },
+  trashcan: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
+  icon: {
+    width: 17,
+    height: 25,
+    marginRight: 25,
+  },
 
   bloodContainer: {
     flexDirection: 'row',
   },
-
   bloodLeft: {
     flex: 1,
     justifyContent: 'center',
