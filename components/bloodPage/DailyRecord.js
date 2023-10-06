@@ -10,8 +10,8 @@ const DailyRecord = ({record}) => {
     const data = {
       post_id: post_id,
     };
-    fetch(proxyUrl + '/api/v1/mysugar' + post_id, {
-      method: 'POST',
+    fetch(proxyUrl + '/api/v1/mysugar/' + post_id, {
+      method: 'DELETE',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
