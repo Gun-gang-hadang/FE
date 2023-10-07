@@ -21,11 +21,9 @@ const DailyRecord = ({record}) => {
         if (!response.ok) {
           throw new Error(`HTTP Error! Status: ${response.status}`);
         }
-        return response.json();
       })
       .then(result => {
         console.log('요청 성공');
-        console.log(result);
       })
       .catch(error => {
         if (error.response) {
@@ -125,9 +123,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   icon: {
-    width: 17,
-    height: 25,
-    marginRight: 25,
+    width: 20,
+    height: 20,
+    marginRight: 15,
   },
 
   bloodContainer: {
