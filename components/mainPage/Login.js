@@ -187,14 +187,15 @@ const styles = StyleSheet.create({
     marginTop: 130,
     marginBottom: -50,
     width: 400,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     backgroundColor: colors.bg,
     justifyContent: 'center',
+    
   },
 
   image: {
     width: 330,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginBottom: 10,
   },
 
@@ -202,9 +203,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     paddingHorizontal: 70,
-    // paddingVertical: 17,
-
-    // marginBottom: 20,
+    paddingVertical: 17,
+    marginBottom: 20,
     alignItems: 'center',
     elevation: 3,
   },
