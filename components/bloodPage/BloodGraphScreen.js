@@ -1,9 +1,8 @@
 import {React,useState} from 'react';
-import {View, ScrollView,StyleSheet,Pressable,Text  ,Modal,} from 'react-native';
+import {View, ScrollView,StyleSheet,Pressable,Text , Modal, TouchableHighlight, Image} from 'react-native';
 import colors from '../../assets/colors/colors';
 import DatePicker from 'react-native-date-picker';
 import { LineChart } from 'react-native-chart-kit';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SimpleTimeStampList from './SimpleTimeStampList';
 
 function* yLabel() {
@@ -132,103 +131,214 @@ const secondData = {
 
   return(
     <View style={styles.container}>
-        <Modal animationType="slide" transparent={true} visible={modalVisible}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-                <SimpleTimeStampList
-                timestamp={timestamp}
-                setTime={_time => {
-                    setSelectedTime(_time);
-                }}
-                setModal = {() => {
-                    setModalVisible(false);
-                }}
-                />
-            </View>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableHighlight
+              style={styles.closeButton}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              underlayColor="#E8E8E8">
+              <Text style={styles.closeText}>x</Text>
+            </TouchableHighlight>
+
+            <Text style={styles.modalTitle}>혈당 수치 기준</Text>
+            <Image
+              source={require('./bloodStandard.png')}
+              style={styles.modalImage}
+            />
+            <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
+            <Text style={styles.modalTextLeft}>
+              ※ 당뇨인 목표 수치에 도달하는 것을 단기적인 목표로 잡고
+            </Text>
+            <Text style={styles.modalTextLeftSecondLine}>
+              건강하당 앱을 활용한 식단 조절을 통해 정상 수치에 도달하는
+            </Text>
+            <Text style={styles.modalTextLeftSecondLine}>
+              것을 장기적인 목표로 설정하는 것을 추천드립니다.
+            </Text>
+            <SimpleTimeStampList
+              timestamp={timestamp}
+              setTime={_time => {
+                setSelectedTime(_time);
+              }}
+              setModal = {() => {
+                setModalVisible(false);
+              }}
+            />
           </View>
-        </Modal>
+        </View>
+      </Modal>
       <View style={styles.headerContainer}>
         <Text style={styles.titleText}>내 혈당</Text>
-        <Pressable
-        style={({pressed}) => [styles.button]}
-        android_ripple={{color: 'white'}}
-        onPress={() => {
-          props.onChangePage('BLOODLIST');
-        }}
-        >
-        <Icon name="arrow-back-outline" size={40} style={styles.icon} />
-      </Pressable>
-      </View>
-      <ScrollView>
-        <Pressable onPress={onPressDate}>
-        <Text style={styles.noticeText}>날짜를 선택하세요</Text>
-          <Text style={styles.dateText}>
-            {datetext}
-          </Text>
+        <View style={{flexDirection: 'column', paddingTop: 25}}>
+          <TouchableHighlight
+            style={styles.openButton}
+            onPress={() => {
+              setModalVisible(true);
+            }}
+            underlayColor="#F67B28">
+            <Text style={styles.textStyle}>혈당 수치 기준</Text>
+          </TouchableHighlight>
+        </View>
+        </View>
+        <ScrollView>
+          <View style={styles.choiceWay}>
+            <TouchableHighlight
+              style={styles.listOrGraph}
+              onPress={() => {
+                props.onChangePage('BLOODLIST');
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.listOrGraphTextStyle}>목록</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.listOrGraphNow}
+              onPress={() => {
+                props.onChangePage('GRAPH');
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.listOrGraphTextStyleNow}>그래프</Text>
+            </TouchableHighlight>
+          </View>        
+          <Pressable onPress={onPressDate}>
+            <Text style={[styles.noticeText,{marginTop:10,}]}>날짜를 선택하세요</Text>
+            <Text style={styles.dateText}>{datetext}</Text>
+          </Pressable>
+        <LineChart
+          data={data}
+          width={420}
+          height={190}
+          formatYLabel={() => yLabelIterator.next().value}
+          segments={2}
+          chartConfig={chartConfig}
+          fromZero = {true}
+          propsForVerticalLabels = {{fontSize:20,}}
+          //style={{borderRadius:3,}}
+        />
+        <Pressable onPress={() => {setModalVisible(true);}}>
+          <Text style={[styles.noticeText,{marginTop:50,}]}>시간을 선택하세요</Text>
+          <View style={styles.timeView}>
+            <Text style={styles.dateText}>{selectedTime}</Text>
+            <Text style={styles.detailNoticeText}>(최근 7일 간의 기록입니다)</Text>
+          </View>
         </Pressable>
-      <LineChart
-        data={data}
-        width={420}
-        height={190}
-        formatYLabel={() => yLabelIterator.next().value}
-        segments={2}
-        chartConfig={chartConfig}
-        fromZero = {true}
-        propsForVerticalLabels = {{fontSize:20,}}
-        //style={{borderRadius:3,}}
-      />
-      <Pressable onPress={() => {
-                  setModalVisible(true);
-                }}>
-        <Text style={[styles.noticeText,{marginTop:23,}]}>시간을 선택하세요</Text>
-        <Text style={styles.dateText}>
-            {selectedTime}
-        </Text>
-      </Pressable>
-      <LineChart
-        data={secondData}
-        width={420}
-        height={220}
-        chartConfig={secondChartConfig}
-        propsForVerticalLabels = {{fontSize:20,}}
-        //style={{borderRadius:3,}}
-      />
-    </ScrollView>
-    <DatePicker
-      modal
-      open={open}
-      mode="date"
-      date={firstDate}
-      //onDateChange={setToday}
-      onConfirm={onConfirm}
-      confirmText="확인"
-      onCancel={onCancel}
-      cancelText="취소"
-      title="날짜 선택"
-      locale="ko"
-      />
-  </View>
+        <LineChart
+          data={secondData}
+          width={420}
+          height={220}
+          chartConfig={secondChartConfig}
+          propsForVerticalLabels = {{fontSize:20,}}
+          //style={{borderRadius:3,}}
+        />
+      </ScrollView>
+      <DatePicker
+        modal
+        open={open}
+        mode="date"
+        date={firstDate}
+        //onDateChange={setToday}
+        onConfirm={onConfirm}
+        confirmText="확인"
+        onCancel={onCancel}
+        cancelText="취소"
+        title="날짜 선택"
+        locale="ko"
+        />
+      </View>
   );
-
 };
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     backgroundColor: colors.bg,
-    marginLeft: 5,
+    marginLeft: -3,
     marginRight: 5,
-},
-button: {
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    marginLeft: 180,
-    marginTop: 29,
-    backgroundColor: '#FEF4EB',
+  },
+  openButton: {
+    height: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 18,
+    marginRight: 15,
     justifyContent: 'center',
+    backgroundColor: '#FD9639',
+    borderRadius: 20,
+    elevation: 5,
+  },
+  modalTitle: {
+    color: '#000000',
+    paddingVertical: 20,
+    textAlign: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: -5,
+  },
+  modalText: {
+    color: '#000000',
+    marginTop: -35,
+    marginBottom: 30,
+    textAlign: 'center',
+    fontFamily: 'Pretendard-Blod',
+  },
+
+  modalTextLeft: {
+    color: '#000000',
+    fontSize: 15,
+    marginLeft: 10,
+    marginTop: 20,
+    fontFamily: 'Pretendard-SemiBold',
+  },
+
+  modalTextLeftSecondLine: {
+    color: '#000000',
+    fontSize: 15,
+    marginLeft: 23,
+    fontFamily: 'Pretendard-SemiBold',
+  },
+
+  modalImage: {
+    width: '95%',
+    aspectRatio: 2, // 가로세로 비율 유지
+    resizeMode: 'contain',
     alignItems: 'center',
   },
+
+  closeButton: {
+    backgroundColor: '#ffffff',
+    position: 'absolute',
+    top: 10,
+    right: 20,
+    zIndex: 1,
+    borderRadius: 50,
+    paddingHorizontal: 8,
+    // paddingVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 10,
+  },
+  closeText: {
+    color: '#000000',
+    fontSize: 20,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  button: {
+      width: 55,
+      height: 55,
+      borderRadius: 50,
+      marginLeft: 180,
+      marginTop: 29,
+      backgroundColor: '#FEF4EB',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -237,6 +347,7 @@ button: {
     fontSize: 35,
     color: 'black',
     margin: 20,
+    marginLeft: 28,
     marginTop: 40,
     marginBottom: 25,
     fontFamily: 'TheJamsil4-Medium',
@@ -248,17 +359,26 @@ button: {
     fontFamily: 'Pretendard-SemiBold',
     margin: 0,
     marginLeft: 27,
-    marginBottom: 10,
+    marginBottom: 18,
     textDecorationLine: 'underline',
 
   },
   noticeText: {
     fontSize: 15,
-    color: '#381B00',
+    color: '#EF0000',
     fontFamily: 'Pretendard-SemiBold',
     margin: 0,
     marginLeft: 27,
 
+  },
+  timeView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  detailNoticeText: {
+    marginLeft: 10,
+    marginTop: 5,
+    color: 'black',
   },
   centeredView: {
     flex: 1,
@@ -267,16 +387,59 @@ button: {
     marginBottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
-
   modalView: {
     width: '95%',
-    height: 340,
+    //height: 340,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 10,
     paddingBottom: 30,
     marginBottom: 40,
   },
+
+  choiceWay: {
+    flex: 1,
+    marginLeft: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
+  listOrGraphNow: {
+    height: 30,
+    width: 70,
+    marginLeft: 15,
+    backgroundColor: '#FD9639',
+    borderColor: '#FD9639',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+
+  listOrGraph: {
+    height: 30,
+    width: 70,
+    marginLeft: 15,
+    backgroundColor: colors.bg,
+    borderColor: '#FD9639',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+
+  listOrGraphTextStyleNow: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'Pretendard-SemiBold',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+
+  listOrGraphTextStyle: {
+    color: '#FD9639',
+    fontSize: 20,
+    fontFamily: 'Pretendard-SemiBold',
+    justifyContent: 'center',
+    textAlign: 'center',
+  }
 
 });
 export default BloodGraphScreen;
