@@ -1,14 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableHighlight,
-  Modal,
-  Text,
-  Image,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {View,ScrollView, TouchableHighlight, Modal, Text, Image, StyleSheet, Pressable,} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
@@ -96,16 +87,26 @@ const BloodScreen = () => {
                 underlayColor="#F67B28">
                 <Text style={styles.textStyle}>혈당 수치 기준</Text>
               </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.openButton}
-                onPress={() => {
-                  setView('GRAPH');
-                }}
-                underlayColor="#F67B28">
-                <Text style={styles.textStyle}>그래프 보기</Text>
-              </TouchableHighlight>
             </View>
           </View>
+          <View style={styles.choiceWay}>
+            <TouchableHighlight
+              style={styles.listOrGraphNow}
+              onPress={() => {
+                setView('BLOODLIST');
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.listOrGraphTextStyleNow}>목록</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.listOrGraph}
+              onPress={() => {
+                setView('GRAPH');
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.listOrGraphTextStyle}>그래프</Text>
+            </TouchableHighlight>
+          </View>        
           <DailyRecord record={dailyRecord} />
         </ScrollView>
 
@@ -139,20 +140,23 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+
   button: {
     width: 55,
     height: 55,
     borderRadius: 50,
     marginLeft: 180,
-    marginTop: 29,
+    marginTop: 30,
     backgroundColor: '#FEF4EB',
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+
   titleText: {
     fontSize: 35,
     color: 'black',
@@ -162,11 +166,12 @@ const styles = StyleSheet.create({
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
+  
   openButton: {
-    height: 27,
+    height: 30,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 5,
+    marginTop: 18,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -178,7 +183,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: 'Pretendard-Blod',
   },
 
   centeredView: {
@@ -250,10 +256,53 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // padding: 10,
   },
+
   closeText: {
     color: '#000000',
     fontSize: 20,
   },
+
+  choiceWay: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
+  listOrGraphNow: {
+    height: 30,
+    width: 70,
+    marginLeft: 15,
+    backgroundColor: '#FD9639',
+    borderColor: '#FD9639',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+
+  listOrGraph: {
+    height: 30,
+    width: 70,
+    marginLeft: 15,
+    backgroundColor: colors.bg,
+    borderColor: '#FD9639',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+
+  listOrGraphTextStyleNow: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'Pretendard-SemiBold',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+
+  listOrGraphTextStyle: {
+    color: '#FD9639',
+    fontSize: 20,
+    fontFamily: 'Pretendard-SemiBold',
+    justifyContent: 'center',
+    textAlign: 'center',
+  }
 });
 
 export default BloodScreen;
