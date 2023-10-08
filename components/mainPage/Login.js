@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: 130,
-    marginBottom: -50,
-    width: 400,
+    marginTop: 100,
+    marginBottom: -70,
+    width: 350,
     resizeMode: "contain",
     backgroundColor: colors.bg,
     justifyContent: 'center',
@@ -194,23 +194,24 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 330,
+    width: 300,
     resizeMode: "contain",
-    marginBottom: 10,
+    marginBottom: -30,
   },
 
   button: {
     flexDirection: 'row',
+    width: 300,
     borderRadius: 10,
-    paddingHorizontal: 70,
-    paddingVertical: 17,
-    marginBottom: 20,
+    paddingVertical: 10,
+    marginBottom: 18,
     alignItems: 'center',
+    justifyContent: 'center',
     elevation: 3,
   },
 
   btnText: {
-    fontSize: 28,
+    fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
     color: '#000000',
     marginLeft: 20,

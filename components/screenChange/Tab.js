@@ -21,7 +21,7 @@ const TabNavigation = () => {
         headerTitleStyle: {
           fontFamily: 'TheJamsil4-Medium',
 
-          fontSize: 35,
+          fontSize: 33,
         },
 
         tabBarActiveTintColor: '#000000',
@@ -31,7 +31,7 @@ const TabNavigation = () => {
         tabBarLabelStyle: {
           fontFamily: 'TheJamsil3-Regular',
 
-          fontSize: 25,
+          fontSize: 18,
         },
         tabBarItemStyle: {
           borderStyle: 'solid',
@@ -54,7 +54,7 @@ const TabNavigation = () => {
         },
 
         tabBarStyle: {
-          height: 70,
+          height: 58,
         },
       })}>
       <Tab.Screen

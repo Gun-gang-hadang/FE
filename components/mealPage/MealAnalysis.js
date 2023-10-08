@@ -75,7 +75,7 @@ const MealAnalysis = props => {
     <View style={styles.container}>
       <ScrollView>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.title}>식단 분석</Text>
+          <Text style={styles.titleText}>식단 분석</Text>
           <Pressable
             style={({pressed}) => [styles.button]}
             android_ripple={{color: 'white'}}
@@ -129,12 +129,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
   },
 
-  title: {
-    fontSize: 35,
+  titleText: {
+    fontSize: 28,
     color: 'black',
     margin: 20,
-    marginLeft: 25,
-    marginTop:40,
+    marginLeft: 26,
+    marginTop: 33,
+    marginBottom: 20,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -161,16 +162,16 @@ const styles = StyleSheet.create({
 
   subTitle: {
     color: '#000000',
-    fontSize: 27,
+    fontSize: 20,
     fontFamily: 'TheJamsil4-Medium',
     marginBottom: 15,
-    marginTop: 10,
+    marginTop: 5,
     textAlign: 'center',
   },
 
   orderText: {
     color: '#000000',
-    fontSize: 22,
+    fontSize: 16,
     fontFamily: 'Pretendard-SemiBold',
     marginBottom: 10,
     textAlign: 'center',
@@ -181,17 +182,18 @@ const styles = StyleSheet.create({
     // backgroundColor: '#f6e1b6',
     borderRadius: 15,
     margin: 15,
-    padding: 15,
+    paddingTop: 15,
+    padding: 10,
 
     //그림자 설정
     elevation: 5,
   },
   button: {
-    width: 55,
-    height: 55,
+    width: 50,
+    height: 40,
     borderRadius: 50,
-    marginLeft: 180,
-    marginTop: 29,
+    marginLeft: 120,
+    marginTop: 25,
     backgroundColor: '#FEF4EB',
     justifyContent: 'center',
     alignItems: 'center',
@@ -200,8 +202,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
-  //Nutrition
-
+  // ui 테스트
   // nutrientBox: {
   //   borderRadius: 15,
   //   backgroundColor: colors.sub2,
@@ -210,40 +211,40 @@ const styles = StyleSheet.create({
   //   margin: 10,
   // },
 
-  foodBox: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
+  // foodBox: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginRight: 10,
+  // },
 
-  foodName: {
-    color: '#000000',
-    fontSize: 24,
-    fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 5,
-    fontWeight: 'bold',
-  },
+  // foodName: {
+  //   color: '#000000',
+  //   fontSize: 16,
+  //   fontFamily: 'Pretendard-SemiBold',
+  //   marginBottom: 5,
+  //   fontWeight: 'bold',
+  // },
 
-  foodAmount: {
-    color: '#000000',
-    fontSize: 18,
-    fontFamily: 'Pretendard-SemiBold',
-  },
+  // foodAmount: {
+  //   color: '#000000',
+  //   fontSize: 14,
+  //   fontFamily: 'Pretendard-SemiBold',
+  // },
 
-  foodNutrientBox: {
-    flex: 1,
-    justifyContent: 'center',
-  },
+  // foodNutrientBox: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  // },
 
-  nutrientText: {
-    flex: 1,
-    color: '#000000',
-    fontSize: 20,
-    fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 5,
-    marginTop: 5,
-  },
+  // nutrientText: {
+  //   flex: 1,
+  //   color: '#000000',
+  //   fontSize: 16,
+  //   fontFamily: 'Pretendard-SemiBold',
+  //   marginBottom: 5,
+  //   marginTop: 5,
+  // },
 });
 
 export default MealAnalysis;
