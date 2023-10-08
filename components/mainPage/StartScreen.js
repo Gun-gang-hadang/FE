@@ -70,25 +70,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: 300,
+    marginTop: 240,
     marginBottom: -50,
-    width: 400,
+    width: 350,
     resizeMode: "contain",
     backgroundColor: colors.bg,
     justifyContent: 'center',
     
   },
   textLogo: {
-    width: 330,
+    width: 300,
     resizeMode: "contain",
-    marginTop: -130,
+    marginTop: -150,
   },
   startButton: {
     width: 160,
     height: 50,
     backgroundColor: '#FD9639',
     borderRadius: 18,
-    marginTop: -50,
+    marginTop: -60,
   },
   buttonText: {
     fontFamily: 'Pretendard-SemiBold',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 7,
   }
 });
 

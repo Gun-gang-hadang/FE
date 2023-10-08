@@ -8,6 +8,7 @@ import config from '../config';
 import BloodGraphScreen from './BloodGraphScreen';
 
 const proxyUrl = config.proxyUrl;
+
 const BloodScreen = () => {
   const [viewes, setView] = useState('BLOODLIST');
   const [dailyRecord, setDailyRecord] = useState([]);
@@ -61,6 +62,7 @@ const BloodScreen = () => {
               <Image
                 source={require('./bloodStandard.png')}
                 style={styles.modalImage}
+                resizeMode='cover'
               />
               <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
               <Text style={styles.modalTextLeft}>
@@ -75,41 +77,40 @@ const BloodScreen = () => {
             </View>
           </View>
         </Modal>
-        <ScrollView>
-          <View style={styles.headerContainer}>
-            <Text style={styles.titleText}>내 혈당</Text>
-            <View style={{flexDirection: 'column', paddingTop: 25}}>
-              <TouchableHighlight
-                style={styles.openButton}
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-                underlayColor="#F67B28">
-                <Text style={styles.textStyle}>혈당 수치 기준</Text>
-              </TouchableHighlight>
-            </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.titleText}>내 혈당</Text>
+          <View style={{flexDirection: 'column', paddingTop: 25}}>
+            <TouchableHighlight
+              style={styles.openButton}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.textStyle}>혈당 수치 기준</Text>
+            </TouchableHighlight>
           </View>
-          <View style={styles.choiceWay}>
-            <TouchableHighlight
-              style={styles.listOrGraphNow}
-              onPress={() => {
-                setView('BLOODLIST');
-              }}
-              underlayColor="#F67B28">
-              <Text style={styles.listOrGraphTextStyleNow}>목록</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.listOrGraph}
-              onPress={() => {
-                setView('GRAPH');
-              }}
-              underlayColor="#F67B28">
-              <Text style={styles.listOrGraphTextStyle}>그래프</Text>
-            </TouchableHighlight>
-          </View>        
+        </View>
+        <View style={styles.choiceWay}>
+          <TouchableHighlight
+            style={styles.listOrGraphNow}
+            onPress={() => {
+              setView('BLOODLIST');
+            }}
+            underlayColor="#F67B28">
+            <Text style={styles.listOrGraphTextStyleNow}>목록</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.listOrGraph}
+            onPress={() => {
+              setView('GRAPH');
+            }}
+            underlayColor="#F67B28">
+            <Text style={styles.listOrGraphTextStyle}>그래프</Text>
+          </TouchableHighlight>
+        </View> 
+        <ScrollView>
           <DailyRecord record={dailyRecord} />
         </ScrollView>
-
         <FloatingWriteButton
           onChangeMode={_state => {
             setBloodpage(_state);
@@ -141,37 +142,27 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
 
-  button: {
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    marginLeft: 180,
-    marginTop: 30,
-    backgroundColor: '#FEF4EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
 
   titleText: {
-    fontSize: 35,
+    fontSize: 28,
     color: 'black',
     margin: 20,
-    marginTop: 40,
-    marginBottom: 25,
+    marginTop: 33,
+    marginBottom: 15,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
   
   openButton: {
     height: 30,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 18,
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 10,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -183,7 +174,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 13,
     fontFamily: 'Pretendard-Blod',
   },
 
@@ -196,34 +187,34 @@ const styles = StyleSheet.create({
   },
 
   modalView: {
-    width: '95%',
+    width: '90%',
+    height: 300,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 10,
-    paddingBottom: 30,
-    marginBottom: 40,
+    padding: 3,
+    marginBottom: 30,
   },
 
   modalTitle: {
     color: '#000000',
     paddingVertical: 20,
     textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 18,
     marginBottom: -5,
+    fontFamily: 'Pretendard-SemiBold'
   },
 
   modalText: {
     color: '#000000',
-    marginTop: -35,
-    marginBottom: 30,
+    marginBottom: 10,
     textAlign: 'center',
-    fontFamily: 'Pretendard-Blod',
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 8,
   },
 
   modalTextLeft: {
     color: '#000000',
-    fontSize: 15,
+    fontSize: 11,
     marginLeft: 10,
     marginTop: 20,
     fontFamily: 'Pretendard-SemiBold',
@@ -231,23 +222,24 @@ const styles = StyleSheet.create({
 
   modalTextLeftSecondLine: {
     color: '#000000',
-    fontSize: 15,
+    fontSize: 11,
     marginLeft: 23,
     fontFamily: 'Pretendard-SemiBold',
   },
 
   modalImage: {
-    width: '95%',
-    aspectRatio: 2, // 가로세로 비율 유지
-    resizeMode: 'contain',
+    width: '100%',
+    height: '20%',
     alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 10,
   },
 
   closeButton: {
     backgroundColor: '#ffffff',
     position: 'absolute',
     top: 10,
-    right: 20,
+    right: 15,
     zIndex: 1,
     borderRadius: 50,
     paddingHorizontal: 8,
@@ -263,14 +255,14 @@ const styles = StyleSheet.create({
   },
 
   choiceWay: {
-    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
+    marginBottom: 13,
   },
 
   listOrGraphNow: {
-    height: 30,
-    width: 70,
+    height: 27,
+    width: 60,
     marginLeft: 15,
     backgroundColor: '#FD9639',
     borderColor: '#FD9639',
@@ -279,9 +271,9 @@ const styles = StyleSheet.create({
   },
 
   listOrGraph: {
-    height: 30,
-    width: 70,
-    marginLeft: 15,
+    height: 27,
+    width: 60,
+    marginLeft: 13,
     backgroundColor: colors.bg,
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -290,7 +282,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyleNow: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
@@ -298,7 +290,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyle: {
     color: '#FD9639',
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',

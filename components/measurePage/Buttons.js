@@ -60,13 +60,13 @@ function Buttons(props) {
 
 const styles = StyleSheet.create({
   roundButton: {
-    width: 110,
-    height: 50,
+    width: 90,
+    height: 40,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FD9639',
-    marginTop: 50,
+    marginTop: 60,
     marginLeft: 15,
   },
   buttonContent: {
@@ -77,15 +77,15 @@ const styles = StyleSheet.create({
     color: 'black',
     marginLeft: 10,
     marginRight: 10,
-    fontSize: 25,
-    fontFamily: 'Pretendard-Regular',
+    fontSize: 16,
+    fontFamily: 'Pretendard-SemiBold',
   },
   buttonRight: {
-    marginLeft: 37,
+    marginLeft: 35,
   },
   image: {
-    width: 25,
-    height: 25,
+    width: 16,
+    height: 16,
   },
   edgePage: {
     backgroundColor: '#FED5AF',
