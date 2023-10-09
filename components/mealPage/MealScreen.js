@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     color: 'black',
     margin: 20,
     marginLeft: 26,
-    marginTop: 33,
+    marginTop: 40,
     marginBottom: 20,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',

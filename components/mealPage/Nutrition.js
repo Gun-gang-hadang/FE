@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
 
   foodName: {
     color: '#000000',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'Pretendard-SemiBold',
   },
 
   foodAmount: {
     color: '#000000',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Pretendard-SemiBold',
   },
 
@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
   nutrientText: {
     flex: 1,
     color: '#000000',
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: 'Pretendard-SemiBold',
-    marginBottom: 5,
+    marginBottom: 3,
   },
 });
 
