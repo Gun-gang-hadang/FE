@@ -13,7 +13,7 @@ const BloodrecordScreen = props => {
   const navigation = useNavigation();
   
   // 혈당
-  const [bloodnum, setBloodnum] = useState();
+  const [bloodnum, setBloodnum] = useState('');
   const [id, setId] = useState(1);
   var bloodstate = '상태';
   var textcolor = '#381B00';
@@ -135,11 +135,11 @@ const BloodrecordScreen = props => {
 
   //서버 전송
   const postData = () => {
-    if (isNaN(num) && isNaN(bloodnum)) {
-      handleShowAlert("혈당 수치를 입력해주세요.");
-    }
-    else if (isNaN(bloodnum)) {
+    if (isNaN(bloodnum)) {
       handleShowAlert("혈당 수치는 숫자만 입력할 수 있습니다.");
+    }
+    else if (isNaN(num)) {
+      handleShowAlert("혈당 수치를 입력해주세요.");
     }
     else {
       const data = {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: 'black',
     margin: 27,
-    marginTop: 33,
+    marginTop: 40,
     marginBottom: 10,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
@@ -294,9 +294,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 8,
     margin: 20,
-    paddingTop: 10,
     width: 320,
     height: 200,
+    padding: 5,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginTop: 80,
+    marginTop: 110,
     marginLeft: 15,
     marginRight: 15,
     height: 45,
@@ -400,11 +400,11 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   dateText: {
-    fontSize: 18,
+    fontSize: 16,
     color: 'black',
     fontFamily: 'Pretendard-SemiBold',
     margin: 8,
-    marginLeft: 20,
+    marginLeft: 15,
   },
   input: {
     fontSize: 20,

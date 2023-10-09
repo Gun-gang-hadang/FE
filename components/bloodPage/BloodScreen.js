@@ -108,8 +108,9 @@ const BloodScreen = () => {
             <Text style={styles.listOrGraphTextStyle}>그래프</Text>
           </TouchableHighlight>
         </View> 
-        <ScrollView>
+        <ScrollView style={{marginTop: -30, paddingTop: 30}}>
           <DailyRecord record={dailyRecord} />
+          <View style={{marginBottom: 110,}}></View>
         </ScrollView>
         <FloatingWriteButton
           onChangeMode={_state => {
@@ -145,15 +146,15 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 3,
   },
 
   titleText: {
     fontSize: 28,
     color: 'black',
     margin: 20,
-    marginTop: 33,
-    marginBottom: 15,
+    marginTop: 40,
+    marginBottom: 10,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     height: 30,
     paddingLeft: 15,
     paddingRight: 15,
-    marginTop: 10,
+    marginTop: 15,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -255,15 +256,17 @@ const styles = StyleSheet.create({
   },
 
   choiceWay: {
+    justifyContent: 'flex-end',
+    marginRight: 12,
+    zIndex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 13,
+    marginBottom: 3,
   },
 
   listOrGraphNow: {
-    height: 27,
-    width: 60,
-    marginLeft: 15,
+    height: 24,
+    width: 55,
     backgroundColor: '#FD9639',
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -271,9 +274,9 @@ const styles = StyleSheet.create({
   },
 
   listOrGraph: {
-    height: 27,
-    width: 60,
-    marginLeft: 13,
+    height: 24,
+    width: 55,
+    marginLeft: 8,
     backgroundColor: colors.bg,
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyleNow: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
@@ -290,7 +293,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyle: {
     color: '#FD9639',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     margin: 10,
     marginLeft: 48,
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 0,
   },
   image: {

@@ -159,14 +159,14 @@ const Login = () => {
         <Pressable
           style={[styles.button, {backgroundColor: '#FDDC3F'}]}
           onPress={() => kakaoLogin()}>
-          <Image source={kakaoLogo} />
+          <Image source={kakaoLogo} style={{width: 20, height: 20}}/>
           <Text style={styles.btnText}>카카오 로그인</Text>
         </Pressable>
 
         <Pressable
           style={[styles.button, {backgroundColor: '#FFFFFF'}]}
           onPress={() => googleLogin()}>
-          <Image source={googleLogo} />
+          <Image source={googleLogo} style={{width: 20, height: 20}}/>
           <Text style={styles.btnText}>구글로 로그인</Text>
         </Pressable>
       </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   logo: {
     marginTop: 100,
     marginBottom: -70,
-    width: 350,
+    width: 330,
     resizeMode: "contain",
     backgroundColor: colors.bg,
     justifyContent: 'center',
@@ -194,17 +194,17 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 300,
+    width: 280,
     resizeMode: "contain",
-    marginBottom: -30,
+    marginBottom: -45,
   },
 
   button: {
     flexDirection: 'row',
-    width: 300,
+    width: 280,
     borderRadius: 10,
     paddingVertical: 10,
-    marginBottom: 18,
+    marginBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 3,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
     color: '#000000',
-    marginLeft: 20,
+    marginLeft: 15,
   },
 });
 

@@ -209,7 +209,7 @@ const secondData = {
           <Text style={styles.listOrGraphTextStyleNow}>그래프</Text>
         </TouchableHighlight>
       </View>
-      <ScrollView style={{marginLeft: -5}}>
+      <ScrollView style={{marginTop: -21, marginLeft: -5}}>
         <Pressable onPress={onPressDate}>
           <Text style={[styles.noticeText,{marginTop:10,}]}>날짜를 선택하세요</Text>
           <Text style={styles.dateText}>{datetext}</Text>
@@ -272,24 +272,24 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 15,
   },
 
   titleText: {
     fontSize: 28,
     color: 'black',
     margin: 20,
-    marginTop: 33,
-    marginBottom: 15,
+    marginTop: 40,
+    marginBottom: 20,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
-
+  
   openButton: {
     height: 30,
     paddingLeft: 15,
     paddingRight: 15,
-    marginTop: 10,
+    marginTop: 15,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -399,9 +399,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#EF0000',
     fontFamily: 'Pretendard-SemiBold',
-    margin: 0,
     marginLeft: 27,
-
   },
   timeView: {
     flex: 1,
@@ -414,27 +412,28 @@ const styles = StyleSheet.create({
     marginTop: 7,
     color: 'black',
   },
-
   choiceWay: {
+    justifyContent: 'flex-end',
+    marginTop: -17,
+    marginRight: 12,
+    zIndex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 13,
   },
 
   listOrGraphNow: {
-    height: 27,
-    width: 60,
-    marginLeft: 15,
+    height: 24,
+    width: 55,
     backgroundColor: '#FD9639',
     borderColor: '#FD9639',
+    marginLeft: 8,
     borderWidth: 2,
     borderRadius: 5,
   },
 
   listOrGraph: {
-    height: 27,
-    width: 60,
-    marginLeft: 13,
+    height: 24,
+    width: 55,
     backgroundColor: colors.bg,
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -443,7 +442,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyleNow: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
@@ -451,7 +450,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyle: {
     color: '#FD9639',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
