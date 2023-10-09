@@ -1,66 +1,76 @@
-import {React,useState} from 'react';
-import {View, ScrollView,StyleSheet,Pressable,Text , Modal, TouchableHighlight, Image} from 'react-native';
+import {React, useState} from 'react';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  Text,
+  Modal,
+  TouchableHighlight,
+  Image,
+} from 'react-native';
 import colors from '../../assets/colors/colors';
 import DatePicker from 'react-native-date-picker';
-import { LineChart } from 'react-native-chart-kit';
+import {LineChart} from 'react-native-chart-kit';
 import SimpleTimeStampList from './SimpleTimeStampList';
 import FloatingWriteButton from './FloatingWriteButton';
 
 function* yLabel() {
-    yield* ['정상','주의','위험'];
+  yield* ['정상', '주의', '위험'];
 }
 
-const BloodGraphScreen = (props) => {
+const BloodGraphScreen = props => {
   const [bloodpage, setBloodpage] = useState(true);
-  const [timestamp, setTimestamp] = useState([
-      {id: 1, text: '공복', done: false},
-      {id: 2, text: '아침 식사 전', done: false},
-      {id: 3, text: '아침 식사 후', done: false},
-      {id: 4, text: '점심 식사 전', done: false},
-      {id: 5, text: '점심 식사 후', done: false},
-      {id: 6, text: '저녁 식사 전', done: false},
-      {id: 7, text: '저녁 식사 후', done: false},
-      {id: 8, text: '취침 전', done: false},
-    ]);
-  const [selectedTime,setSelectedTime] = useState(timestamp[0].text);
-  const [modalVisible,setModalVisible]=useState(false);
+  const [timestamp, settimeStamp] = useState([
+    {id: 1, text: '공복', done: false},
+    {id: 2, text: '아침 식사 전', done: false},
+    {id: 3, text: '아침 식사 후', done: false},
+    {id: 4, text: '점심 식사 전', done: false},
+    {id: 5, text: '점심 식사 후', done: false},
+    {id: 6, text: '저녁 식사 전', done: false},
+    {id: 7, text: '저녁 식사 후', done: false},
+    {id: 8, text: '취침 전', done: false},
+  ]);
+  const [selectedTime, setSelectedTime] = useState(timestamp[0].text);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [timemodalVisible, setTimemodalVisible] = useState(false);
 
-    //그래프 차트
+  //그래프 차트
   const yLabelIterator = yLabel();
   const chartConfig = {
-    backgroundGradientFrom: "#FED5AF",
+    backgroundGradientFrom: '#FED5AF',
     backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#FED5AF",
+    backgroundGradientTo: '#FED5AF',
     backgroundGradientToOpacity: 0,
     color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`,
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.5,
     fillShadowGradientFrom: '#A3D948',
     fillShadowGradientTo: '#A3D948',
-    useShadowColorFromDataset: false , // optional
-    propsForLabels:{
-        fontFamily:'Pretendard-SemiBold',
-        fontSize: 14,
-        },
+    useShadowColorFromDataset: false, // optional
+    propsForLabels: {
+      fontFamily: 'Pretendard-SemiBold',
+      fontSize: 14,
+    },
   };
   const secondChartConfig = {
-    backgroundGradientFrom: "#FED5AF",
+    backgroundGradientFrom: '#FED5AF',
     backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#FED5AF",
+    backgroundGradientTo: '#FED5AF',
     backgroundGradientToOpacity: 0,
     color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`,
     strokeWidth: 2, // optional, default 3
     barPercentage: 0.5,
-    useShadowColorFromDataset: false , // optional
+    useShadowColorFromDataset: false, // optional
     fillShadowGradientFrom: '#A3D948',
     fillShadowGradientTo: '#A3D948',
-    propsForLabels:{
-        fontFamily:'Pretendard-SemiBold',
-        fontSize: 9,
-        },
+    propsForLabels: {
+      fontFamily: 'Pretendard-SemiBold',
+      fontSize: 9,
+    },
   };
 
-  //GRAPH PAGE 날짜 선택 
+  //GRAPH PAGE 날짜 선택
   const [open, setOpen] = useState(false);
   const [firstDate, setfirstDate] = useState(new Date());
 
@@ -81,61 +91,69 @@ const BloodGraphScreen = (props) => {
     setOpen(false);
   };
 
-//GRAPH에 사용할 DATA
-var dateList = [];
-var numList = [];
-var timeList = []; 
-var stateList = [];
+  //GRAPH에 사용할 DATA
+  var dateList = [];
+  var numList = [];
+  var timeList = [];
+  var stateList = [];
 
-if(props.record.length>0){
-  for(var i = 0 ; i<props.record.length ; ++i){
-    if(props.record[i].date === datetext){
-      timeList.unshift(props.record[i].time);
-      if(props.record[i].state==='정상'){
-        stateList.unshift(0); 
-      }else if(props.record[i].state==='주의'){
-        stateList.unshift(1); 
-      }else if(props.record[i].state==='위험'){
-        stateList.unshift(2); 
+  if (props.record.length > 0) {
+    for (var i = 0; i < props.record.length; ++i) {
+      if (props.record[i].date === datetext) {
+        timeList.unshift(props.record[i].time);
+        if (props.record[i].state === '정상') {
+          stateList.unshift(0);
+        } else if (props.record[i].state === '주의') {
+          stateList.unshift(1);
+        } else if (props.record[i].state === '위험') {
+          stateList.unshift(2);
+        }
+      }
+      if (props.record[i].time === selectedTime) {
+        var slice = props.record[i].date.substr(5, 8);
+        dateList.unshift(slice);
+        numList.unshift(props.record[i].sugarLevel);
       }
     }
-    if(props.record[i].time === selectedTime){
-      var slice=props.record[i].date.substr(5,8);
-      dateList.unshift(slice);
-      numList.unshift(props.record[i].sugarLevel);
-    }
   }
-}
 
-if(dateList.length>7){
-    dateList = dateList.slice(0,7);
-    numList = numList.slice(0,7);
-}
-const data = {
-  labels: timeList,
-  datasets: [
-    {
-      data: stateList,
-      backgroundColor: '#FED5AF',
-      color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
-      strokeWidth: 2 // optional
-    }
-  ],
-};
+  if (dateList.length > 7) {
+    dateList = dateList.slice(0, 7);
+    numList = numList.slice(0, 7);
+  }
+  const data = {
+    labels: timeList,
+    datasets: [
+      {
+        data: stateList,
+        backgroundColor: '#FED5AF',
+        color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
+        strokeWidth: 2, // optional
+      },
+      {
+        data: [0], //highest graph value
+        withDots: false, //a flage to make it hidden
+      },
+      {
+        data: [2], //highest graph value
+        withDots: false, //a flage to make it hidden
+      },
+    ],
+  };
 
-const secondData = {
-  labels: dateList,
-  datasets: [
-    {
-      data: numList,
-      backgroundColor: '#FED5AF',
-      color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
-      strokeWidth: 2 // optional
-    }
-  ],
-};
+  const secondData = {
+    labels: dateList,
+    datasets: [
+      {
+        data: numList,
+        backgroundColor: '#FED5AF',
+        color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
+        strokeWidth: 2, // optional
+      },
+    ],
+  };
 
-  return(
+  return (
     <View style={styles.container}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
@@ -165,16 +183,23 @@ const secondData = {
               것을 장기적인 목표로 설정하는 것을 추천드립니다.
             </Text>
           </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={timemodalVisible}>
+        <View style={styles.centeredView}>
           <View style={styles.modalView2}>
             <SimpleTimeStampList
-                timestamp={timestamp}
-                setTime={_time => {
-                  setSelectedTime(_time);
-                }}
-                setModal = {() => {
-                  setModalVisible(false);
-                }}
-              />
+              timestamp={timestamp}
+              setTime={_time => {
+                setSelectedTime(_time);
+              }}
+              setModal={() => {
+                setTimemodalVisible(false);
+              }}
+            />
           </View>
         </View>
       </Modal>
@@ -211,7 +236,9 @@ const secondData = {
       </View>
       <ScrollView style={{marginTop: -21, marginLeft: -5}}>
         <Pressable onPress={onPressDate}>
-          <Text style={[styles.noticeText,{marginTop:10,}]}>날짜를 선택하세요</Text>
+          <Text style={[styles.noticeText, {marginTop: 10}]}>
+            날짜를 선택하세요
+          </Text>
           <Text style={styles.dateText}>{datetext}</Text>
         </Pressable>
         <LineChart
@@ -221,13 +248,18 @@ const secondData = {
           formatYLabel={() => yLabelIterator.next().value}
           segments={2}
           chartConfig={chartConfig}
-          fromZero = {true}
-          propsForVerticalLabels = {{fontSize:20,}}
-          style={{marginBottom: -10, }}
+          fromZero={true}
+          propsForVerticalLabels={{fontSize: 20}}
+          style={{marginBottom: -10}}
         />
 
-        <Pressable onPress={() => {setModalVisible(true);}}>
-          <Text style={[styles.noticeText,{marginTop:50,}]}>시간을 선택하세요</Text>
+        <Pressable
+          onPress={() => {
+            setTimemodalVisible(true);
+          }}>
+          <Text style={[styles.noticeText, {marginTop: 50}]}>
+            시간을 선택하세요
+          </Text>
           <View style={styles.timeView}>
             <Text style={styles.dateText}>{selectedTime}</Text>
             <Text style={styles.detailNoticeText}>(최근 7건의 기록입니다)</Text>
@@ -238,7 +270,7 @@ const secondData = {
           width={340}
           height={200}
           chartConfig={secondChartConfig}
-          propsForVerticalLabels = {{fontSize:20,}}
+          propsForVerticalLabels={{fontSize: 20}}
           style={{marginBottom: 90}}
         />
       </ScrollView>
@@ -255,8 +287,15 @@ const secondData = {
         title="날짜 선택"
         locale="ko"
       />
-      
-      <FloatingWriteButton onChangeMode={_state => {setBloodpage(_state);}}/>
+
+      <FloatingWriteButton
+        onChangeMode={_s => {
+          props.onChangeMode(_s);
+        }}
+        setBlood={_s => {
+          props.setBlood(_s);
+        }}
+      />
     </View>
   );
 };
@@ -284,7 +323,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
-  
+
   openButton: {
     height: 30,
     paddingLeft: 15,
@@ -328,7 +367,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     marginBottom: -5,
-    fontFamily: 'Pretendard-SemiBold'
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   modalText: {
@@ -382,7 +421,12 @@ const styles = StyleSheet.create({
   },
 
   modalView2: {
-
+    width: '90%',
+    height: 300,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 3,
+    marginBottom: 30,
   },
 
   dateText: {
@@ -394,7 +438,7 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     textDecorationLine: 'underline',
   },
-  
+
   noticeText: {
     fontSize: 11,
     color: '#EF0000',
@@ -454,6 +498,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
-  }
+  },
 });
 export default BloodGraphScreen;
