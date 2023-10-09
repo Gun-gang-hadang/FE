@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {View,ScrollView, TouchableHighlight, Modal, Text, Image, StyleSheet, Pressable,} from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableHighlight,
+  Modal,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Alert,
+} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
@@ -14,6 +24,7 @@ const BloodScreen = () => {
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [bloodpage, setBloodpage] = useState(true);
+  const [PID, setPID] = useState('');
 
   //서버에서 정보 받아오는 훅
   useEffect(() => {
@@ -43,6 +54,56 @@ const BloodScreen = () => {
       });
   });
 
+  //dailyRecord 삭제시 뜨는 alert
+  const goAlert = () =>
+    Alert.alert(
+      // 말그대로 Alert를 띄운다
+      '정말로 삭제하시나요?', 
+      '', 
+      [
+        // 버튼 배열
+        {
+          text: '아니요', 
+          onPress: () => console.log(''), 
+          style: 'cancel',
+        },
+        {text: '네', onPress: () => deleteRecord(PID)}, //버튼 제목
+        // 이벤트 발생시 로그를 찍는다
+      ],
+      {cancelable: false},
+    );
+
+  const deleteRecord = post_id => {
+    const data = {
+      post_id: post_id,
+    };
+    fetch(proxyUrl + '/api/v1/mysugar/' + post_id, {
+      method: 'DELETE',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+      })
+      .then(result => {
+        console.log('요청 성공');
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Backend Error:', error.response.data);
+          console.error('Status Code:', error.response.status);
+        } else if (error.request) {
+          console.error('Network Error:', error.request);
+        } else {
+          console.error('Request Error:', error.message);
+        }
+      });
+  };
+
   if (bloodpage && viewes === 'BLOODLIST') {
     return (
       <View style={styles.container}>
@@ -62,7 +123,7 @@ const BloodScreen = () => {
               <Image
                 source={require('./bloodStandard.png')}
                 style={styles.modalImage}
-                resizeMode='cover'
+                resizeMode="cover"
               />
               <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
               <Text style={styles.modalTextLeft}>
@@ -107,28 +168,50 @@ const BloodScreen = () => {
             underlayColor="#F67B28">
             <Text style={styles.listOrGraphTextStyle}>그래프</Text>
           </TouchableHighlight>
-        </View> 
+        </View>
         <ScrollView style={{marginTop: -30, paddingTop: 30}}>
-          <DailyRecord record={dailyRecord} />
-          <View style={{marginBottom: 110,}}></View>
+          <DailyRecord
+            record={dailyRecord}
+            setID={_id => {
+              setPID(_id);
+            }}
+            setModal={() => {
+              goAlert();
+            }}
+          />
+          <View style={{marginBottom: 110}}></View>
         </ScrollView>
         <FloatingWriteButton
-          onChangeMode={_state => {
-            setBloodpage(_state);
+          onChangePage={mode => {
+            setView(mode);
+          }}
+          record={dailyRecord}
+          setBlood={mode => {
+            setBloodpage(mode);
           }}
         />
       </View>
     );
   } else if (bloodpage && viewes === 'GRAPH') {
-    return <BloodGraphScreen onChangePage={mode => {
-      setView(mode);
-    }}
-    record={dailyRecord} />;
+    return (
+      <BloodGraphScreen
+        onChangePage={mode => {
+          setView(mode);
+        }}
+        record={dailyRecord}
+        setBlood={mode => {
+          setBloodpage(mode);
+        }}
+      />
+    );
   } else {
     return (
       <BloodrecordScreen
         onChangeMode={_state => {
-          setBloodpage(_state);
+          setView(_state);
+        }}
+        setBlood={mode => {
+          setBloodpage(mode);
         }}
       />
     );
@@ -158,7 +241,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
-  
+
   openButton: {
     height: 30,
     paddingLeft: 15,
@@ -202,7 +285,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     marginBottom: -5,
-    fontFamily: 'Pretendard-SemiBold'
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   modalText: {
@@ -297,7 +380,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
-  }
+  },
 });
 
 export default BloodScreen;
