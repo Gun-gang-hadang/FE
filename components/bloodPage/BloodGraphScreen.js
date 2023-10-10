@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
   },
   choiceWay: {
     justifyContent: 'flex-end',
-    marginTop: -17,
+    marginTop: -22,
     marginRight: 12,
     zIndex: 1,
     alignItems: 'center',

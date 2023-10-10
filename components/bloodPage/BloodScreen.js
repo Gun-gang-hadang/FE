@@ -16,6 +16,7 @@ import DailyRecord from './DailyRecord';
 import BloodrecordScreen from './BloodrecordScreen';
 import config from '../config';
 import BloodGraphScreen from './BloodGraphScreen';
+import CustomAlert from '../common/CustomDeleteAlert';
 
 const proxyUrl = config.proxyUrl;
 
@@ -25,6 +26,7 @@ const BloodScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [bloodpage, setBloodpage] = useState(true);
   const [PID, setPID] = useState('');
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   //서버에서 정보 받아오는 훅
   useEffect(() => {
@@ -37,7 +39,6 @@ const BloodScreen = () => {
       })
       .then(
         data => {
-          // Handle the data
           setDailyRecord(data);
         },
         [dailyRecord],
@@ -55,23 +56,19 @@ const BloodScreen = () => {
   });
 
   //dailyRecord 삭제시 뜨는 alert
-  const goAlert = () =>
-    Alert.alert(
-      // 말그대로 Alert를 띄운다
-      '정말로 삭제하시나요?', 
-      '', 
-      [
-        // 버튼 배열
-        {
-          text: '아니요', 
-          onPress: () => console.log(''), 
-          style: 'cancel',
-        },
-        {text: '네', onPress: () => deleteRecord(PID)}, //버튼 제목
-        // 이벤트 발생시 로그를 찍는다
-      ],
-      {cancelable: false},
-    );
+  const showCustomAlert = (post_id) => {
+    setAlertVisible(true);
+    setPID(post_id);
+  };
+
+  const handleDeleteRecord = () => {
+    deleteRecord(PID);
+    setAlertVisible(false);
+  };
+
+  const handleCancelDelete = () => {
+    setAlertVisible(false);
+  };
 
   const deleteRecord = post_id => {
     const data = {
@@ -176,7 +173,7 @@ const BloodScreen = () => {
               setPID(_id);
             }}
             setModal={() => {
-              goAlert();
+              showCustomAlert();
             }}
           />
           <View style={{marginBottom: 110}}></View>
@@ -189,6 +186,11 @@ const BloodScreen = () => {
           setBlood={mode => {
             setBloodpage(mode);
           }}
+        />
+        <CustomAlert 
+          visible={isAlertVisible}
+          onConfirm={handleDeleteRecord}
+          onCancel={handleCancelDelete}
         />
       </View>
     );

@@ -11,7 +11,7 @@ import {
   LogBox,
 } from 'react-native';
 import TimeStampList from './TimeStampList';
-import CustomAlert from '../common/CustomAlert';
+import CustomAlert from '../common/BloodRecordAlert';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
