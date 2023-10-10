@@ -1,82 +1,59 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {useState} from 'react';
 import colors from '../../assets/colors/colors';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
 
-const DailyRecord = ({record}) => {
-  // 혈당 기록 삭제
-  const deleteRecord = post_id => {
-    const data = {
-      post_id: post_id,
-    };
-    fetch(proxyUrl + '/api/v1/mysugar/' + post_id, {
-      method: 'DELETE',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-      })
-      .then(result => {
-        console.log('요청 성공');
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error('Backend Error:', error.response.data);
-          console.error('Status Code:', error.response.status);
-        } else if (error.request) {
-          console.error('Network Error:', error.request);
-        } else {
-          console.error('Request Error:', error.message);
-        }
-      });
-  };
+const DailyRecord = props => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
-      {record && record.map(data => {
-        let bloodLevel = data.state;
-        let textColor;
-        if (bloodLevel == '정상') {
-          textColor = '#2DAA3A';
-        } else if (bloodLevel == '주의') {
-          textColor = '#FF7A00';
-        } else if (bloodLevel == '위험') {
-          textColor = '#EF0000';
-        }
+      {props.record &&
+        props.record.map(data => {
+          let bloodLevel = data.state;
+          let textColor;
+          if (bloodLevel == '정상') {
+            textColor = '#2DAA3A';
+          } else if (bloodLevel == '주의') {
+            textColor = '#FF7A00';
+          } else if (bloodLevel == '위험') {
+            textColor = '#EF0000';
+          }
 
-        return (
-          <View key={data.post_id} style={styles.container}>
-            <View style={styles.top}>
-              <View style={styles.dateSection}>
-                <Text style={styles.date}>{data.date}</Text>
+          return (
+            <View key={data.post_id} style={styles.container}>
+              <View style={styles.top}>
+                <View style={styles.dateSection}>
+                  <Text style={styles.date}>{data.date}</Text>
+                </View>
+                <View style={styles.trashcan}>
+                  <TouchableOpacity
+                    style={styles.modal}
+                    onPress={() => {
+                      props.setID(data.post_id);
+                      props.setModal();
+                    }}>
+                    <Image
+                      source={require('../../assets/images/bin.png')}
+                      style={styles.icon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.trashcan}>
-                <TouchableOpacity onPress={() => deleteRecord(data.post_id)}>
-                  <Image
-                    source={require('../../assets/images/bin.png')}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
 
-            <View style={styles.bloodContainer}>
-              <View style={styles.bloodLeft}>
-                <Text style={styles.time}>{data.time}</Text>
-              </View>
+              <View style={styles.bloodContainer}>
+                <View style={styles.bloodLeft}>
+                  <Text style={styles.time}>{data.time}</Text>
+                </View>
 
-              <View style={styles.bloodRight}>
-                <Text style={[styles.level, {color: textColor}]}>
-                  {data.state}
-                </Text>
-                <Text style={styles.bloodsugar}>{data.sugarLevel}mg</Text>
+                <View style={styles.bloodRight}>
+                  <Text style={[styles.level, {color: textColor}]}>
+                    {data.state}
+                  </Text>
+                  <Text style={styles.bloodsugar}>{data.sugarLevel}mg</Text>
+                </View>
               </View>
-            </View>
             </View>
           );
         })}
@@ -103,7 +80,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#381B00',
     borderBottomWidth: 0.7,
   },
-  
+
   dateSection: {
     flex: 1,
     borderTopRightRadius: 15,

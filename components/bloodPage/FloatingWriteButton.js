@@ -7,7 +7,8 @@ import colors from '../../assets/colors/colors';
 const FloatingWriteButton = (props) => {
   //const navigation = useNavigation();
   const onPress = () => {
-    props.onChangeMode(false);
+    //props.onChangePage('BLOODLIST');
+    props.setBlood(false);
   };
 
   return (

@@ -1,7 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput, LogBox} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  LogBox,
+} from 'react-native';
 import TimeStampList from './TimeStampList';
 import CustomAlert from '../common/CustomAlert';
 import config from '../config';
@@ -11,21 +19,23 @@ LogBox.ignoreAllLogs();
 
 const BloodrecordScreen = props => {
   const navigation = useNavigation();
-  
+
   // 혈당
   const [bloodnum, setBloodnum] = useState('');
   const [id, setId] = useState(1);
   var bloodstate = '상태';
   var textcolor = '#381B00';
-  
+
   // 잘못된 입력에 대한 alert
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const handleShowAlert = (message) => { 
+  const handleShowAlert = message => {
     setAlertMessage(message);
     setShowAlert(true);
   };
-  const handleCloseAlert = () => { setShowAlert(false);};
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
   // 저장하기 버튼 활성화/비활성화 ui
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
@@ -36,6 +46,7 @@ const BloodrecordScreen = props => {
   // 저장취소
   const onPress = () => {
     props.onChangeMode('BLOODLIST');
+    props.setBlood(true);
   };
 
   //날짜
@@ -130,18 +141,20 @@ const BloodrecordScreen = props => {
     textcolor = '#807645';
   }
 
-  const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive: buttonStyleWhenActive;
-  const titleStyle = isNaN(num) ? titleStyleWhenNonActive: titleStyleWhenActive;
+  const buttonStyle = isNaN(num)
+    ? buttonStyleWhenNonActive
+    : buttonStyleWhenActive;
+  const titleStyle = isNaN(num)
+    ? titleStyleWhenNonActive
+    : titleStyleWhenActive;
 
   //서버 전송
   const postData = () => {
     if (isNaN(bloodnum)) {
-      handleShowAlert("혈당 수치는 숫자만 입력할 수 있습니다.");
-    }
-    else if (isNaN(num)) {
-      handleShowAlert("혈당 수치를 입력해주세요.");
-    }
-    else {
+      handleShowAlert('혈당 수치는 숫자만 입력할 수 있습니다.');
+    } else if (isNaN(num)) {
+      handleShowAlert('혈당 수치를 입력해주세요.');
+    } else {
       const data = {
         date: year + '년 ' + month + '월 ' + date + '일',
         time: timestamp[findIndex].text,
@@ -164,7 +177,8 @@ const BloodrecordScreen = props => {
         .then(result => {
           console.log('요청 성공');
           console.log(result);
-          props.onChangeMode(true);
+          props.onChangeMode('BLOODLIST');
+          props.setBlood(true);
         })
         .catch(error => {
           if (error.response) {
