@@ -1,45 +1,16 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {useState} from 'react';
 import colors from '../../assets/colors/colors';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
 
-const DailyRecord = ({record}) => {
-  // 혈당 기록 삭제
-  const deleteRecord = post_id => {
-    const data = {
-      post_id: post_id,
-    };
-    fetch(proxyUrl + '/api/v1/mysugar/' + post_id, {
-      method: 'DELETE',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-      })
-      .then(result => {
-        console.log('요청 성공');
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error('Backend Error:', error.response.data);
-          console.error('Status Code:', error.response.status);
-        } else if (error.request) {
-          console.error('Network Error:', error.request);
-        } else {
-          console.error('Request Error:', error.message);
-        }
-      });
-  };
+const DailyRecord = props => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
-      {record &&
-        record.map(data => {
+      {props.record &&
+        props.record.map(data => {
           let bloodLevel = data.state;
           let textColor;
           if (bloodLevel == '정상') {
@@ -57,7 +28,12 @@ const DailyRecord = ({record}) => {
                   <Text style={styles.date}>{data.date}</Text>
                 </View>
                 <View style={styles.trashcan}>
-                  <TouchableOpacity onPress={() => deleteRecord(data.post_id)}>
+                  <TouchableOpacity
+                    style={styles.modal}
+                    onPress={() => {
+                      props.setID(data.post_id);
+                      props.setModal();
+                    }}>
                     <Image
                       source={require('../../assets/images/bin.png')}
                       style={styles.icon}
@@ -89,14 +65,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.sub1,
     borderRadius: 15,
-    margin: 13,
-    marginBottom: 8,
+    margin: 7,
     marginLeft: 10,
     marginRight: 10,
-
     //그림자 설정
     elevation: 5,
   },
+
   top: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -105,40 +80,46 @@ const styles = StyleSheet.create({
     borderBottomColor: '#381B00',
     borderBottomWidth: 0.7,
   },
+
   dateSection: {
     flex: 1,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
   },
+
   date: {
     width: '100%',
     color: '#000000',
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Pretendard-Bold',
     padding: 8,
     paddingLeft: 20,
   },
+
   trashcan: {
     flex: 1,
     flexDirection: 'row-reverse',
   },
+
   icon: {
-    width: 20,
-    height: 20,
+    width: 16,
+    height: 16,
     marginRight: 15,
   },
 
   bloodContainer: {
     flexDirection: 'row',
   },
+
   bloodLeft: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   time: {
     color: '#000000',
-    fontSize: 30,
+    fontSize: 20,
     fontFamily: 'Pretendard-SemiBold',
   },
 
@@ -150,13 +131,15 @@ const styles = StyleSheet.create({
     borderLeftColor: '#000000',
     borderLeftWidth: 0.7,
   },
+
   bloodsugar: {
     color: '#000000',
-    fontSize: 30,
+    fontSize: 18,
     fontFamily: 'Pretendard-SemiBold',
   },
+
   level: {
-    fontSize: 30,
+    fontSize: 18,
     fontFamily: 'Pretendard-SemiBold',
     marginBottom: -6,
   },

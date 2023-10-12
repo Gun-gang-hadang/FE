@@ -41,8 +41,8 @@ function TimeStampList(props) {
           }}>
           <Text
             style={{
-              fontSize: item.done ? 26 : 20,
-              margin: item.done ? 10 : 6,
+              fontSize: item.done ? 18 : 14,
+              margin: item.done ? 7 : 5,
               textAlign: 'center',
               color: item.done ? '#000000' : '#807645',
               fontFamily: item.done ? 'Pretendard-SemiBold' : 'Pretendard-Regular'

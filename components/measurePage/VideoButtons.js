@@ -23,20 +23,20 @@ function VideoButtons(props) {
 
 const styles = StyleSheet.create({
   pButton: {
-    width: 65,
-    height: 65,
-    borderRadius: 50,
+    width: 55,
+    height: 55,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 0.8,
     margin: 10,
-    marginLeft: 47,
-    marginTop: 40,
+    marginLeft: 48,
+    marginTop: 20,
     marginBottom: 0,
   },
   image: {
-    width: 65,
-    height: 65,
+    width: 55,
+    height: 55,
   },
 });
 
