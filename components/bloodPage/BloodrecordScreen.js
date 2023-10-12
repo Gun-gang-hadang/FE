@@ -18,7 +18,8 @@ const proxyUrl = config.proxyUrl;
 LogBox.ignoreAllLogs();
 
 const BloodrecordScreen = props => {
-  const navigation = useNavigation();
+  //중복 Alert modal
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   // 혈당
   const [bloodnum, setBloodnum] = useState('');
@@ -175,10 +176,14 @@ const BloodrecordScreen = props => {
           return response.json();
         })
         .then(result => {
+          if(result===-1){
+            isAlertVisible(true);
+          };
           console.log('요청 성공');
-          console.log(result);
+          console.log("result",result);
           props.onChangeMode('BLOODLIST');
           props.setBlood(true);
+          
         })
         .catch(error => {
           if (error.response) {
@@ -276,6 +281,11 @@ const BloodrecordScreen = props => {
         title="날짜 선택"
         locale="ko"
       />
+      <CustomAlert 
+          visible={isAlertVisible}
+          message="이미 기록이 존재합니다."
+          onClose={handleCloseAlert}
+        />
     </SafeAreaView>
   );
 };
