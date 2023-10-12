@@ -209,12 +209,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF4EB',
   },
   titleText: {
-    fontSize: 35,
+    fontSize: 28,
     color: 'black',
     margin: 20,
-    marginLeft: 25,
+    marginLeft: 26,
     marginTop: 40,
-    marginBottom: 30,
+    marginBottom: 20,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
@@ -228,17 +228,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   subinfotext: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Pretend-SemiBold',
     color: 'black',
-    marginLeft: 30,
-    marginTop: 15,
+    marginLeft: 20,
+    marginTop: 10,
   },
   subinfotextsecondline: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Pretend-SemiBold',
     color: 'black',
-    marginLeft: 45,
+    marginLeft: 31,
     marginRight: 35,
     marginTop: 2,
     marginBottom: 15,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: colors.bg,
-    marginLeft: 5,
+    marginLeft: 3,
     flexDirection: 'row',
   },
   CameraButton : {
@@ -255,9 +255,9 @@ const styles = StyleSheet.create({
   },
   selectButton: {
     borderRadius: 20,
-    width: 180,
+    width: 155,
     padding: 25,
-    marginTop: 30,
+    marginTop: 60,
     marginLeft: 15,
 
     //box-shadow
@@ -272,19 +272,19 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   icon: {
-    width: 60,
-    height: 60,
+    width: 40,
+    height: 40,
     marginLeft: 35,
     marginBottom: 10,
   },
   buttonText: {
-    fontSize: 30,
-    fontFamily: 'Pretendared-Medium',
+    fontSize: 20,
+    fontFamily: 'TheJamsil3-Regular',
     textAlign: 'center',
     color: 'black'
   },
   loadingText: {
-    fontSize: 26,
+    fontSize: 20,
     textAlign: 'center',
     fontFamily: 'Pretendard-SemiBold',
     color: 'black'

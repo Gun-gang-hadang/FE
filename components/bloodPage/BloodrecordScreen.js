@@ -1,9 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput, LogBox} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  LogBox,
+} from 'react-native';
 import TimeStampList from './TimeStampList';
-import CustomAlert from '../common/CustomAlert';
+import CustomAlert from '../common/BloodRecordAlert';
 import config from '../config';
 
 const proxyUrl = config.proxyUrl;
@@ -11,21 +19,23 @@ LogBox.ignoreAllLogs();
 
 const BloodrecordScreen = props => {
   const navigation = useNavigation();
-  
+
   // 혈당
-  const [bloodnum, setBloodnum] = useState();
+  const [bloodnum, setBloodnum] = useState('');
   const [id, setId] = useState(1);
   var bloodstate = '상태';
   var textcolor = '#381B00';
-  
+
   // 잘못된 입력에 대한 alert
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const handleShowAlert = (message) => { 
+  const handleShowAlert = message => {
     setAlertMessage(message);
     setShowAlert(true);
   };
-  const handleCloseAlert = () => { setShowAlert(false);};
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
   // 저장하기 버튼 활성화/비활성화 ui
   const buttonStyleWhenNonActive = {backgroundColor: '#FED5AF'};
@@ -36,6 +46,7 @@ const BloodrecordScreen = props => {
   // 저장취소
   const onPress = () => {
     props.onChangeMode('BLOODLIST');
+    props.setBlood(true);
   };
 
   //날짜
@@ -130,18 +141,20 @@ const BloodrecordScreen = props => {
     textcolor = '#807645';
   }
 
-  const buttonStyle = isNaN(num) ? buttonStyleWhenNonActive: buttonStyleWhenActive;
-  const titleStyle = isNaN(num) ? titleStyleWhenNonActive: titleStyleWhenActive;
+  const buttonStyle = isNaN(num)
+    ? buttonStyleWhenNonActive
+    : buttonStyleWhenActive;
+  const titleStyle = isNaN(num)
+    ? titleStyleWhenNonActive
+    : titleStyleWhenActive;
 
   //서버 전송
   const postData = () => {
-    if (isNaN(num) && isNaN(bloodnum)) {
-      handleShowAlert("혈당 수치를 입력해주세요.");
-    }
-    else if (isNaN(bloodnum)) {
-      handleShowAlert("혈당 수치는 숫자만 입력할 수 있습니다.");
-    }
-    else {
+    if (isNaN(bloodnum)) {
+      handleShowAlert('혈당 수치는 숫자만 입력할 수 있습니다.');
+    } else if (isNaN(num)) {
+      handleShowAlert('혈당 수치를 입력해주세요.');
+    } else {
       const data = {
         date: year + '년 ' + month + '월 ' + date + '일',
         time: timestamp[findIndex].text,
@@ -164,7 +177,8 @@ const BloodrecordScreen = props => {
         .then(result => {
           console.log('요청 성공');
           console.log(result);
-          props.onChangeMode(true);
+          props.onChangeMode('BLOODLIST');
+          props.setBlood(true);
         })
         .catch(error => {
           if (error.response) {
@@ -206,7 +220,6 @@ const BloodrecordScreen = props => {
                   styles.statetext,
                   {
                     color: textcolor,
-                    fontSize: 30,
                   },
                 ]}>
                 {bloodstate}
@@ -226,7 +239,7 @@ const BloodrecordScreen = props => {
                   fontFamily: 'Pretendard-SemiBold',
                   marginLeft: 3,
                   marginTop: 20,
-                  fontSize: 20,
+                  fontSize: 18,
                 }}>
                 mg/dL
               </Text>
@@ -273,30 +286,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF4EB',
   },
   titleText: {
-    fontSize: 35,
-    color: '#381B00',
-    margin: 20,
-    marginLeft: 25,
+    fontSize: 28,
+    color: 'black',
+    margin: 27,
     marginTop: 40,
+    marginBottom: 10,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
   statetext: {
-    fontSize: 30,
+    fontSize: 24,
     color: '#381B00',
     fontFamily: 'Pretendard-SemiBold',
-    margin: 8,
-    marginRight: 35,
+    marginBottom: -5,
+    marginRight: 5,
     textAlign: 'center',
   },
   block1: {
     backgroundColor: '#FFEB8A',
     borderRadius: 15,
     marginTop: 10,
+    marginBottom: 8,
     margin: 20,
-    paddingTop: 10,
-    width: 370,
-    height: 260,
+    width: 320,
+    height: 200,
+    padding: 5,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -321,12 +335,10 @@ const styles = StyleSheet.create({
     borderRightColor: 'black',
     borderRightWidth: 1,
     borderLeftWidth: 1,
-    marginTop: 45,
-    marginBottom: 30,
-    marginLeft: 30,
-    marginRight: 40,
-    paddingTop: 8,
-    paddingBottom: 7,
+    marginTop: 27,
+    marginBottom: 23,
+    marginLeft: 25,
+    marginRight: 20,
   },
   item2: {
     flex: 1,
@@ -343,10 +355,10 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     backgroundColor: '#FED5AF',
-    marginTop: 120,
+    marginTop: 110,
     marginLeft: 15,
     marginRight: 15,
-    height: 55,
+    height: 45,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -361,12 +373,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#d7d7d7',
-    margin: 15,
+    margin: 10,
     borderRadius: 10,
-    marginTop: 0,
+    marginTop: -7,
     marginLeft: 15,
     marginRight: 15,
-    height: 55,
+    height: 45,
     //box-shadow
     shadowColor: 'black',
     shadowOffset: {
@@ -378,45 +390,44 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   buttonCancelText: {
-    fontSize: 26,
+    fontSize: 18,
     fontFamily: 'TheJamsil3-Regular',
     color: '#808080',
   },
   title: {
-    fontSize: 26,
+    fontSize: 18,
     fontFamily: 'TheJamsil3-Regular',
     color: '#7F6B58',
   },
   subinfotext: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'TheJamsil3-Regular',
     color: '#381B00',
     marginLeft: 30,
     marginTop: 15,
   },
   subinfotextsecondline: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'TheJamsil3-Regular',
     color: '#381B00',
     marginLeft: 45,
     marginTop: 7,
   },
   dateText: {
-    fontSize: 23,
+    fontSize: 16,
     color: 'black',
     fontFamily: 'Pretendard-SemiBold',
     margin: 8,
-    marginLeft: 20,
+    marginLeft: 15,
   },
   input: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
     borderBottomWidth: 1.5,
-    width: 60,
+    width: 50,
     paddingBottom: -14,
     marginRight: 5,
-    marginLeft: -10,
     textAlign: 'center',
   },
 });

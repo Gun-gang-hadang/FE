@@ -70,33 +70,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: 300,
+    marginTop: 260,
     marginBottom: -50,
-    width: 400,
+    width: 340,
     resizeMode: "contain",
     backgroundColor: colors.bg,
     justifyContent: 'center',
     
   },
   textLogo: {
-    width: 330,
+    width: 290,
     resizeMode: "contain",
-    marginTop: -130,
+    marginTop: -150,
   },
   startButton: {
     width: 160,
-    height: 50,
+    height: 48,
     backgroundColor: '#FD9639',
     borderRadius: 18,
-    marginTop: -50,
+    marginTop: -70,
   },
   buttonText: {
     fontFamily: 'Pretendard-SemiBold',
     color: 'black',
-    fontSize: 24,
+    fontSize: 22,
     textAlign: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 7,
   }
 });
 

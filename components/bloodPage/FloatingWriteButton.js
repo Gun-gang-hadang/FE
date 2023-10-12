@@ -7,7 +7,8 @@ import colors from '../../assets/colors/colors';
 const FloatingWriteButton = (props) => {
   //const navigation = useNavigation();
   const onPress = () => {
-    props.onChangeMode(false);
+    //props.onChangePage('BLOODLIST');
+    props.setBlood(false);
   };
 
   return (
@@ -27,8 +28,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16,
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     //안드로이드 전용 그림자 설정
     elevation: 5,
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
     overflow: Platform.select({android: 'hidden'}),
   },
   button: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     backgroundColor: colors.main,
     justifyContent: 'center',

@@ -19,19 +19,19 @@ const ExplainBox = ({id}) => {
 
 const styles = StyleSheet.create({
   block: {
-    marginTop: 420,
-    marginLeft: 20,
-    marginRight: 20,
+    marginTop: 270,
+    marginLeft: 80,
+    marginRight: 80,
     backgroundColor: '#FFEB8A',
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 380,
+    width: 340,
     height: 140,
   },
   bodyText: {
-    lineHeight: 33,
-    fontSize: 25,
+    lineHeight: 28,
+    fontSize: 20,
     paddingLeft: 10,
     paddingRight: 10,
     color: 'black',

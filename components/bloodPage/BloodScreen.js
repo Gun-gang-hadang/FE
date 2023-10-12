@@ -1,18 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {View,ScrollView, TouchableHighlight, Modal, Text, Image, StyleSheet, Pressable,} from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableHighlight,
+  Modal,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Alert,
+} from 'react-native';
 import FloatingWriteButton from './FloatingWriteButton';
 import colors from '../../assets/colors/colors';
 import DailyRecord from './DailyRecord';
 import BloodrecordScreen from './BloodrecordScreen';
 import config from '../config';
 import BloodGraphScreen from './BloodGraphScreen';
+import CustomAlert from '../common/CustomDeleteAlert';
 
 const proxyUrl = config.proxyUrl;
+
 const BloodScreen = () => {
   const [viewes, setView] = useState('BLOODLIST');
   const [dailyRecord, setDailyRecord] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [bloodpage, setBloodpage] = useState(true);
+  const [PID, setPID] = useState('');
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   //서버에서 정보 받아오는 훅
   useEffect(() => {
@@ -25,7 +39,6 @@ const BloodScreen = () => {
       })
       .then(
         data => {
-          // Handle the data
           setDailyRecord(data);
         },
         [dailyRecord],
@@ -41,6 +54,52 @@ const BloodScreen = () => {
         }
       });
   });
+
+  //dailyRecord 삭제시 뜨는 alert
+  const showCustomAlert = (post_id) => {
+    setAlertVisible(true);
+    setPID(post_id);
+  };
+
+  const handleDeleteRecord = () => {
+    deleteRecord(PID);
+    setAlertVisible(false);
+  };
+
+  const handleCancelDelete = () => {
+    setAlertVisible(false);
+  };
+
+  const deleteRecord = post_id => {
+    const data = {
+      post_id: post_id,
+    };
+    fetch(proxyUrl + '/api/v1/mysugar/' + post_id, {
+      method: 'DELETE',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+      })
+      .then(result => {
+        console.log('요청 성공');
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Backend Error:', error.response.data);
+          console.error('Status Code:', error.response.status);
+        } else if (error.request) {
+          console.error('Network Error:', error.request);
+        } else {
+          console.error('Request Error:', error.message);
+        }
+      });
+  };
 
   if (bloodpage && viewes === 'BLOODLIST') {
     return (
@@ -61,6 +120,7 @@ const BloodScreen = () => {
               <Image
                 source={require('./bloodStandard.png')}
                 style={styles.modalImage}
+                resizeMode="cover"
               />
               <Text style={styles.modalText}>출처: 대한당뇨병학회</Text>
               <Text style={styles.modalTextLeft}>
@@ -75,58 +135,85 @@ const BloodScreen = () => {
             </View>
           </View>
         </Modal>
-        <ScrollView>
-          <View style={styles.headerContainer}>
-            <Text style={styles.titleText}>내 혈당</Text>
-            <View style={{flexDirection: 'column', paddingTop: 25}}>
-              <TouchableHighlight
-                style={styles.openButton}
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-                underlayColor="#F67B28">
-                <Text style={styles.textStyle}>혈당 수치 기준</Text>
-              </TouchableHighlight>
-            </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.titleText}>내 혈당</Text>
+          <View style={{flexDirection: 'column', paddingTop: 25}}>
+            <TouchableHighlight
+              style={styles.openButton}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+              underlayColor="#F67B28">
+              <Text style={styles.textStyle}>혈당 수치 기준</Text>
+            </TouchableHighlight>
           </View>
-          <View style={styles.choiceWay}>
-            <TouchableHighlight
-              style={styles.listOrGraphNow}
-              onPress={() => {
-                setView('BLOODLIST');
-              }}
-              underlayColor="#F67B28">
-              <Text style={styles.listOrGraphTextStyleNow}>목록</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.listOrGraph}
-              onPress={() => {
-                setView('GRAPH');
-              }}
-              underlayColor="#F67B28">
-              <Text style={styles.listOrGraphTextStyle}>그래프</Text>
-            </TouchableHighlight>
-          </View>        
-          <DailyRecord record={dailyRecord} />
+        </View>
+        <View style={styles.choiceWay}>
+          <TouchableHighlight
+            style={styles.listOrGraphNow}
+            onPress={() => {
+              setView('BLOODLIST');
+            }}
+            underlayColor="#F67B28">
+            <Text style={styles.listOrGraphTextStyleNow}>목록</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.listOrGraph}
+            onPress={() => {
+              setView('GRAPH');
+            }}
+            underlayColor="#F67B28">
+            <Text style={styles.listOrGraphTextStyle}>그래프</Text>
+          </TouchableHighlight>
+        </View>
+        <ScrollView style={{marginTop: -30, paddingTop: 30}}>
+          <DailyRecord
+            record={dailyRecord}
+            setID={_id => {
+              setPID(_id);
+            }}
+            setModal={() => {
+              showCustomAlert();
+            }}
+          />
+          <View style={{marginBottom: 110}}></View>
         </ScrollView>
-
         <FloatingWriteButton
-          onChangeMode={_state => {
-            setBloodpage(_state);
+          onChangePage={mode => {
+            setView(mode);
           }}
+          record={dailyRecord}
+          setBlood={mode => {
+            setBloodpage(mode);
+          }}
+        />
+        <CustomAlert 
+          visible={isAlertVisible}
+          onConfirm={handleDeleteRecord}
+          onCancel={handleCancelDelete}
         />
       </View>
     );
   } else if (bloodpage && viewes === 'GRAPH') {
-    return <BloodGraphScreen onChangePage={mode => {
-      setView(mode);
-    }}
-    record={dailyRecord} />;
+    return (
+      <BloodGraphScreen
+        onChangePage={mode => {
+          setView(mode);
+        }}
+        record={dailyRecord}
+        setBlood={mode => {
+          setBloodpage(mode);
+        }}
+      />
+    );
   } else {
     return (
       <BloodrecordScreen
         onChangeMode={_state => {
-          setBloodpage(_state);
+          setView(_state);
+        }}
+        setBlood={mode => {
+          setBloodpage(mode);
         }}
       />
     );
@@ -141,37 +228,27 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
 
-  button: {
-    width: 55,
-    height: 55,
-    borderRadius: 50,
-    marginLeft: 180,
-    marginTop: 30,
-    backgroundColor: '#FEF4EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 3,
   },
 
   titleText: {
-    fontSize: 35,
+    fontSize: 28,
     color: 'black',
     margin: 20,
     marginTop: 40,
-    marginBottom: 25,
+    marginBottom: 10,
     fontFamily: 'TheJamsil4-Medium',
     alignItems: 'flex-start',
   },
-  
+
   openButton: {
     height: 30,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 18,
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 15,
     marginRight: 15,
     justifyContent: 'center',
     backgroundColor: '#FD9639',
@@ -183,7 +260,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 13,
     fontFamily: 'Pretendard-Blod',
   },
 
@@ -196,34 +273,34 @@ const styles = StyleSheet.create({
   },
 
   modalView: {
-    width: '95%',
+    width: '90%',
+    height: 300,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 10,
-    paddingBottom: 30,
-    marginBottom: 40,
+    padding: 3,
+    marginBottom: 30,
   },
 
   modalTitle: {
     color: '#000000',
     paddingVertical: 20,
     textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 18,
     marginBottom: -5,
+    fontFamily: 'Pretendard-SemiBold',
   },
 
   modalText: {
     color: '#000000',
-    marginTop: -35,
-    marginBottom: 30,
+    marginBottom: 10,
     textAlign: 'center',
-    fontFamily: 'Pretendard-Blod',
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 8,
   },
 
   modalTextLeft: {
     color: '#000000',
-    fontSize: 15,
+    fontSize: 11,
     marginLeft: 10,
     marginTop: 20,
     fontFamily: 'Pretendard-SemiBold',
@@ -231,23 +308,24 @@ const styles = StyleSheet.create({
 
   modalTextLeftSecondLine: {
     color: '#000000',
-    fontSize: 15,
+    fontSize: 11,
     marginLeft: 23,
     fontFamily: 'Pretendard-SemiBold',
   },
 
   modalImage: {
-    width: '95%',
-    aspectRatio: 2, // 가로세로 비율 유지
-    resizeMode: 'contain',
+    width: '100%',
+    height: '20%',
     alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 10,
   },
 
   closeButton: {
     backgroundColor: '#ffffff',
     position: 'absolute',
     top: 10,
-    right: 20,
+    right: 15,
     zIndex: 1,
     borderRadius: 50,
     paddingHorizontal: 8,
@@ -263,15 +341,17 @@ const styles = StyleSheet.create({
   },
 
   choiceWay: {
-    flex: 1,
+    justifyContent: 'flex-end',
+    marginRight: 12,
+    zIndex: 1,
     alignItems: 'center',
     flexDirection: 'row',
+    marginBottom: 3,
   },
 
   listOrGraphNow: {
-    height: 30,
-    width: 70,
-    marginLeft: 15,
+    height: 24,
+    width: 55,
     backgroundColor: '#FD9639',
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -279,9 +359,9 @@ const styles = StyleSheet.create({
   },
 
   listOrGraph: {
-    height: 30,
-    width: 70,
-    marginLeft: 15,
+    height: 24,
+    width: 55,
+    marginLeft: 8,
     backgroundColor: colors.bg,
     borderColor: '#FD9639',
     borderWidth: 2,
@@ -290,7 +370,7 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyleNow: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
@@ -298,11 +378,11 @@ const styles = StyleSheet.create({
 
   listOrGraphTextStyle: {
     color: '#FD9639',
-    fontSize: 20,
+    fontSize: 13,
     fontFamily: 'Pretendard-SemiBold',
     justifyContent: 'center',
     textAlign: 'center',
-  }
+  },
 });
 
 export default BloodScreen;

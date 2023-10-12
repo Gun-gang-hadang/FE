@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
   },
   backgroundVideo: {
     position: 'absolute',
-    marginTop: -15,
-    top: 10,
+    top: 15,
     left: 0,
     bottom: 160,
     right: 0,

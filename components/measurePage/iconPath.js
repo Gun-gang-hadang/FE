@@ -7,4 +7,5 @@ export const iconPath = {
   infoIcon: require('../../assets/images/information.png'),
   camera: require('../../assets/images/camera.png'),
   gallery: require('../../assets/images/gallery.png'),
+  warnIcon: require('../../assets/images/warn.png'),
 };
