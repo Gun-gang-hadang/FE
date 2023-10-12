@@ -16,7 +16,7 @@ import SimpleTimeStampList from './SimpleTimeStampList';
 import FloatingWriteButton from './FloatingWriteButton';
 
 function* yLabel() {
-  yield* ['정상', '주의', '위험'];
+  yield* [' ','정상', '주의', '위험'];
 }
 
 const BloodGraphScreen = props => {
@@ -48,9 +48,14 @@ const BloodGraphScreen = props => {
     fillShadowGradientFrom: '#A3D948',
     fillShadowGradientTo: '#A3D948',
     useShadowColorFromDataset: false, // optional
-    propsForLabels: {
+    propsForHorizontalLabels: {
       fontFamily: 'Pretendard-SemiBold',
-      fontSize: 14,
+      fontSize: 12,
+    },
+    propsForVerticalLabels:{
+      fontSize:12,
+      marginTop:0,
+      marginBottom:10,
     },
   };
   const secondChartConfig = {
@@ -93,20 +98,20 @@ const BloodGraphScreen = props => {
 
   //GRAPH에 사용할 DATA
   var dateList = [];
-  var numList = [];
+  var numList = [0];
   var timeList = [];
-  var stateList = [];
+  var stateList = [0];
 
   if (props.record.length > 0) {
     for (var i = 0; i < props.record.length; ++i) {
       if (props.record[i].date === datetext) {
         timeList.unshift(props.record[i].time);
         if (props.record[i].state === '정상') {
-          stateList.unshift(0);
-        } else if (props.record[i].state === '주의') {
           stateList.unshift(1);
-        } else if (props.record[i].state === '위험') {
+        } else if (props.record[i].state === '주의') {
           stateList.unshift(2);
+        } else if (props.record[i].state === '위험') {
+          stateList.unshift(3);
         }
       }
       if (props.record[i].time === selectedTime) {
@@ -125,7 +130,7 @@ const BloodGraphScreen = props => {
     labels: timeList,
     datasets: [
       {
-        data: stateList,
+        data: stateList.length>1?stateList.slice(0,-1):stateList,
         backgroundColor: '#FED5AF',
         color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
         strokeWidth: 2, // optional
@@ -135,7 +140,7 @@ const BloodGraphScreen = props => {
         withDots: false, //a flage to make it hidden
       },
       {
-        data: [2], //highest graph value
+        data: [3], //highest graph value
         withDots: false, //a flage to make it hidden
       },
     ],
@@ -145,7 +150,7 @@ const BloodGraphScreen = props => {
     labels: dateList,
     datasets: [
       {
-        data: numList,
+        data: numList.length>1?numList.slice(0,-1):numList,
         backgroundColor: '#FED5AF',
         color: (opacity = 1) => `rgba(56, 27, 0, ${opacity})`, // optional
         strokeWidth: 2, // optional
@@ -244,13 +249,12 @@ const BloodGraphScreen = props => {
         <LineChart
           data={data}
           width={340}
-          height={100}
+          height={180}
           formatYLabel={() => yLabelIterator.next().value}
-          segments={2}
+          segments={3}
           chartConfig={chartConfig}
           fromZero={true}
-          propsForVerticalLabels={{fontSize: 20}}
-          style={{marginBottom: -10}}
+          style={{marginBottom: -20}}
         />
 
         <Pressable

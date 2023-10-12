@@ -82,6 +82,7 @@ const BloodScreen = () => {
     })
       .then(response => {
         if (!response.ok) {
+          console.log(data);
           throw new Error(`HTTP Error! Status: ${response.status}`);
         }
       })
@@ -191,6 +192,7 @@ const BloodScreen = () => {
           onConfirm={handleDeleteRecord}
           onCancel={handleCancelDelete}
         />
+
       </View>
     );
   } else if (bloodpage && viewes === 'GRAPH') {
@@ -214,6 +216,7 @@ const BloodScreen = () => {
         setBlood={mode => {
           setBloodpage(mode);
         }}
+        record={dailyRecord}
       />
     );
   }
