@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import DatePicker from 'react-native-date-picker';
-import {useNavigation} from '@react-navigation/native';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,7 +18,7 @@ LogBox.ignoreAllLogs();
 
 const BloodrecordScreen = props => {
   //중복 Alert modal
-  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   // 혈당
   const [bloodnum, setBloodnum] = useState('');
@@ -36,6 +35,10 @@ const BloodrecordScreen = props => {
   };
   const handleCloseAlert = () => {
     setShowAlert(false);
+  };
+
+  const handleDuplicatedCloseAlert = () => {
+    setIsAlertVisible(false);
   };
 
   // 저장하기 버튼 활성화/비활성화 ui
@@ -162,39 +165,46 @@ const BloodrecordScreen = props => {
         sugarLevel: bloodnum,
         state: bloodstate,
       };
-      fetch(proxyUrl + '/api/v1/mysugar/save', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP Error! Status: ${response.status}`);
-          }
-          return response.json();
+      var isDuplicate = false;
+      props.record.map(function (rec) {
+        if (rec.date === data.date && rec.time === data.time) {
+          isDuplicate = true;
+        } // 이렇게 해도 결과가 위에 것과 똑같다.
+      });
+      if (isDuplicate === true) {
+        setIsAlertVisible(true);
+        console.log(isAlertVisible);
+      } else if (isDuplicate === false) {
+        fetch(proxyUrl + '/api/v1/mysugar/save', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
-        .then(result => {
-          if(result===-1){
-            isAlertVisible(true);
-          };
-          console.log('요청 성공');
-          console.log("result",result);
-          props.onChangeMode('BLOODLIST');
-          props.setBlood(true);
-          
-        })
-        .catch(error => {
-          if (error.response) {
-            console.error('Backend Error:', error.response.data);
-            console.error('Status Code:', error.response.status);
-          } else if (error.request) {
-            console.error('Network Error:', error.request);
-          } else {
-            console.error('Request Error:', error.message);
-          }
-        });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP Error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(result => {
+            console.log('요청 성공');
+            console.log('result', result);
+            props.onChangeMode('BLOODLIST');
+            props.setBlood(true);
+          })
+          .catch(error => {
+            if (error.response) {
+              console.error('Backend Error:', error.response.data);
+              console.error('Status Code:', error.response.status);
+            } else if (error.request) {
+              console.error('Network Error:', error.request);
+            } else {
+              console.error('Request Error:', error.message);
+            }
+          });
+      }
     }
   };
   return (
@@ -268,6 +278,7 @@ const BloodrecordScreen = props => {
         message={alertMessage}
         onClose={handleCloseAlert}
       />
+
       <DatePicker
         modal
         open={open}
@@ -281,11 +292,11 @@ const BloodrecordScreen = props => {
         title="날짜 선택"
         locale="ko"
       />
-      <CustomAlert 
-          visible={isAlertVisible}
-          message="이미 기록이 존재합니다."
-          onClose={handleCloseAlert}
-        />
+      <CustomAlert
+        visible={isAlertVisible}
+        message="이미 기록이 존재합니다."
+        onClose={handleDuplicatedCloseAlert}
+      />
     </SafeAreaView>
   );
 };
