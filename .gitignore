@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/reactnative,macos,visualstudiocode,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=reactnative,macos,visualstudiocode,windows
 
+# 서버 주소
+./components/config
+
 ### macOS ###
 # General
 .DS_Store
