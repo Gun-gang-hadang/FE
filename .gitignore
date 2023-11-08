@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+components/config.js
+
 # Xcode
 #
 build/
