@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=reactnative,macos,visualstudiocode,windows
 
 # 서버 주소
-./components/config.js
+.components/config.js
 
 ### macOS ###
 # General
