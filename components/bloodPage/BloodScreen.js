@@ -56,9 +56,14 @@ const BloodScreen = () => {
   });
 
   //dailyRecord 삭제시 뜨는 alert
+<<<<<<< HEAD
   const showCustomAlert = (post_id) => {
     setAlertVisible(true);
     setPID(post_id);
+=======
+  const showCustomAlert = () => {
+    setAlertVisible(true);
+>>>>>>> 46cc5f5a8cc0941b2f4b32d4f21ab4a34f4f464b
   };
 
   const handleDeleteRecord = () => {
